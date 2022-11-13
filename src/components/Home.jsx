@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { BsFillCloudMoonFill } from 'react-icons/bs';
 import '../assets/style/home.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+const API_KEY = process.env.REACT_APP_API_KEY;
 
 export default function Home() {
 	const [searchState, setSearchState] = useState('');
+	const navigate = useNavigate();
 
 	const handleChange = (event) => {
 		const value = event.target.value;
@@ -16,9 +21,12 @@ export default function Home() {
 
 		const search = searchState.trim();
 
-		console.log(search);
-
 		if (search) {
+			axios
+				.get(
+					`http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${search}&days=5&aqi=yes&alerts=no`
+				)
+				.then((res) => navigate('/dashboard', { state: { data: res.data } }));
 		}
 
 		setSearchState('');

@@ -2,6 +2,7 @@
 	--app-primary: rgb(132, 53, 197);
 	--app-primary-dark: rgb(73, 32, 107);
 	--off-white: rgb(238, 234, 234);
+	--off-black: rgb(31, 19, 39);
 }
 nav {
 	display: flex;
