@@ -1,23 +1,44 @@
 :root {
 	--app-primary: rgb(120, 54, 173);
-	--app-primary-dark: rgb(97, 39, 145);
+	--app-primary-dark: rgb(73, 32, 107);
 	--off-white: rgb(238, 234, 234);
 }
 nav {
 	display: flex;
 	justify-content: center;
 	height: 5rem;
-	filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.664));
+	filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.959));
 	background-color: var(--app-primary-dark);
+	margin-bottom: 2rem;
 }
 main {
-	height: calc(100vh - 7rem);
+	display: flex;
+	justify-content: center;
+	height: calc(100vh - 9rem);
+	text-shadow: 1px 1px 2px black;
 }
 footer {
 	display: flex;
 	align-self: flex-end;
+	justify-content: center;
+	align-items: center;
 	width: 100vw;
 	height: 2rem;
+}
+button {
+	border: none;
+	background-color: var(--app-primary);
+	color: var(--off-white);
+	text-transform: uppercase;
+	font-size: 0.9rem;
+	font-weight: 900;
+	font-family: 'Open Sans';
+	border-radius: 6px;
+	padding: 0.5rem 1rem;
+	transition: all 100ms;
+}
+button:hover {
+	filter: brightness(1.1);
 }
 .app {
 	display: flex;
@@ -36,6 +57,22 @@ div,
 span,
 p {
 	font-family: 'Open Sans';
+}
+input {
+	border-radius: 3px;
+	border: none;
+	margin: 1rem 0;
+}
+input:focus {
+	outline: none;
+}
+.container {
+	display: flex;
+	background-color: var(--app-primary-dark);
+	margin: 1rem;
+	border-radius: 6px;
+	filter: drop-shadow(1px 3px 3px rgba(0, 0, 0, 0.404));
+	height: fit-content;
 }
 .brand h1,
 .brand h4 {
@@ -93,7 +130,7 @@ p {
 	align-items: center;
 	width: 5rem;
 	margin: 1.2rem 0.5rem;
-	background-color: var(--app-primary);
+	background-color: var(--app-primary-dark);
 	border-radius: 3px;
 	color: var(--off-white);
 	transition: all 100ms;

@@ -1,0 +1,28 @@
+.home-container {
+	flex-direction: column;
+	justify-content: center;
+	width: 40%;
+	min-width: 500px;
+	padding: 1rem 3rem;
+}
+.home-container header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.home-container input {
+	text-align: center;
+}
+.cloud {
+	font-size: 7rem;
+	margin-bottom: 1rem;
+	filter: drop-shadow(2px 4px 5px rgba(0, 0, 0, 0.192));
+}
+.search {
+	width: 100%;
+}
+.search-form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
