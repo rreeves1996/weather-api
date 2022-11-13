@@ -1,17 +1,29 @@
 import React from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function Navbar() {
+	const navigate = useNavigate();
 	return (
 		<nav>
 			<div className='nav-links'>
-				<a href='/home'>Home</a>
-				<a href='/about'>About</a>
-				<div className='brand'>
+				<Link to='/'>
+					<h6 className='nav-link'>Home</h6>
+				</Link>
+				<Link to='/about'>
+					<h6 className='nav-link'>About</h6>
+				</Link>
+
+				<div className='brand' onClick={() => navigate('/')}>
 					<h1>Weather</h1>
 					<h4>api</h4>
 				</div>
-				<a href='https://github.com/rreeves1996/weather-api'>Repo</a>
-				<a href='/contact'>Contact</a>
+
+				<a href='https://github.com/rreeves1996/weather-api'>
+					<h6 className='nav-link'>Repo</h6>
+				</a>
+				<Link to='/contact'>
+					<h6 className='nav-link'>Contact</h6>
+				</Link>
 			</div>
 		</nav>
 	);
