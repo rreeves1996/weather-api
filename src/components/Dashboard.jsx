@@ -35,14 +35,30 @@ export default function Dashboard() {
 					`http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${search}&days=5&aqi=yes&alerts=no`
 				)
 				.then((res) => {
+					if (history.length > 4) {
+						const newHistory = history;
+						newHistory.pop();
+						setHistory((history) => [
+							{
+								id: uuidv4(),
+								text: search,
+							},
+							...newHistory,
+						]);
+						console.log(newHistory);
+						console.log(history);
+					} else {
+						setHistory((history) => [
+							{
+								id: uuidv4(),
+								text: search,
+							},
+							...history,
+						]);
+						console.log(history);
+					}
+
 					setWeatherData(res.data);
-					setHistory((history) => [
-						{
-							id: uuidv4(),
-							text: search,
-						},
-						...history,
-					]);
 				})
 				.catch((err) => console.log(`Error: ${err}`));
 		}
@@ -61,16 +77,26 @@ export default function Dashboard() {
 					const newHistory = history.filter((item) => {
 						return item.text !== value;
 					});
-					if (history.length > 7) {
+					console.log(newHistory);
+					if (history.length > 5) {
 						newHistory.pop();
+						console.log(newHistory);
+						setHistory((history) => [
+							{
+								id: uuidv4(),
+								text: value,
+							},
+							...newHistory,
+						]);
+					} else {
+						setHistory((history) => [
+							{
+								id: uuidv4(),
+								text: value,
+							},
+							...newHistory,
+						]);
 					}
-					setHistory((history) => [
-						{
-							id: uuidv4(),
-							text: value,
-						},
-						...newHistory,
-					]);
 				})
 				.catch((err) => console.log(`Error: ${err}`));
 		}
