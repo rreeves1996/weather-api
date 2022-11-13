@@ -1,0 +1,103 @@
+:root {
+	--app-primary: rgb(120, 54, 173);
+	--app-primary-dark: rgb(97, 39, 145);
+	--off-white: rgb(238, 234, 234);
+}
+nav {
+	display: flex;
+	justify-content: center;
+	height: 5rem;
+	filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.664));
+	background-color: var(--app-primary-dark);
+}
+main {
+	height: calc(100vh - 7rem);
+}
+footer {
+	display: flex;
+	align-self: flex-end;
+	width: 100vw;
+	height: 2rem;
+}
+.app {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	background-color: var(--app-primary);
+	color: var(--off-white);
+}
+h1,
+h2,
+h3,
+h4 {
+	font-family: 'Roboto';
+}
+div,
+span,
+p {
+	font-family: 'Open Sans';
+}
+.brand h1,
+.brand h4 {
+	margin-bottom: 0;
+	text-transform: uppercase;
+	line-height: 1;
+	background-color: var(--app-primary-dark);
+}
+.brand {
+	display: flex;
+	background-color: var(--app-primary-dark);
+	width: fit-content;
+	height: fit-content;
+	padding: 0.7rem;
+	padding-top: 0;
+	margin: 1.2rem 1.5rem 0;
+	border-radius: 6px;
+	z-index: 5;
+	transition: all 100ms;
+}
+.brand:hover {
+	cursor: pointer;
+}
+.brand h1 {
+	border: 2px solid var(--off-white);
+	border-radius: 4px;
+	padding: 0 1rem 0 0.6rem;
+	height: 100%;
+	font-family: 'Alumni Sans Pinstripe';
+	font-size: 4.5rem;
+
+	letter-spacing: -3px;
+	font-weight: 900;
+}
+.brand h4 {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: 100;
+	font-size: 1.5rem;
+	transform: translate(11.6rem, -0.6rem);
+	padding: 7px 1px;
+	text-decoration: underline;
+	text-underline-offset: 4px;
+	text-decoration-thickness: 2px;
+}
+.nav-links {
+	display: flex;
+	justify-content: space-evenly;
+}
+.nav-links a {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 5rem;
+	margin: 1.2rem 0.5rem;
+	background-color: var(--app-primary);
+	border-radius: 3px;
+	color: var(--off-white);
+	transition: all 100ms;
+}
+.nav-links a:hover {
+	filter: brightness(1.1);
+}

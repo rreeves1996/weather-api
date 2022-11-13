@@ -9,9 +9,9 @@ import './assets/style/style.css';
 
 function App() {
 	return (
-		<div className='app bg-secondary bg-gradient'>
+		<div className='app'>
 			<Navbar />
-			<main className='bg-secondary'>
+			<main>
 				<Routes>
 					<Route path='/' element={<Home />} />
 					<Route path='/dashboard' element={<Dashboard />} />
