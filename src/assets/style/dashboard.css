@@ -3,7 +3,7 @@
 	width: 90%;
 }
 .dashboard-search {
-	padding: 1rem 1rem;
+	padding: 2rem 2.5rem;
 	width: 25%;
 	display: flex;
 	flex-direction: column;
@@ -26,7 +26,6 @@
 	display: flex;
 	flex-direction: column;
 	padding: 0.1rem 0;
-	transition: height 500ms;
 }
 .history-item {
 	display: flex;
@@ -42,4 +41,82 @@
 	cursor: pointer;
 	filter: brightness(1.1);
 	transform: translateY(-1px);
+}
+.forecast {
+	width: 75%;
+	height: 100%;
+}
+.current .container,
+.daily {
+	display: flex;
+	padding: 2rem 2.5rem;
+}
+.current .container {
+	min-height: 377px;
+	color: var(--off-white);
+}
+.dashboard-header {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	width: fit-content;
+}
+.dashboard-header header {
+	width: fit fit-content;
+	padding-bottom: 1rem;
+}
+.sub-header {
+	display: flex;
+	flex-direction: column;
+	min-width: 100%;
+	width: min-content;
+	border-top: 2px solid var(--off-black);
+	padding: 1rem 0 0.3rem;
+	justify-content: flex-start;
+}
+.sub-header h6 {
+	display: flex;
+	align-items: center;
+	font-size: 3rem;
+	font-family: 'Alumni Sans Pinstripe';
+	line-height: 0;
+	height: 2rem;
+	font-weight: 900;
+	letter-spacing: -1px;
+	text-indent: -0.6rem;
+
+	margin: 0 0 0.3rem -0.6rem;
+}
+
+.sub-header span {
+	font-size: 0.8rem;
+}
+.daily {
+	min-height: 250px;
+}
+.current header h1,
+.current header h4,
+.sub-header p {
+	line-height: 1;
+	margin-bottom: 0.5rem;
+}
+.sub-header p {
+	padding: 0.2rem;
+	line-height: 1.5;
+	width: 100%;
+	margin: 0.5rem 0 0.2rem;
+}
+.current header h1 {
+	font-size: 5rem;
+}
+.current header h4 {
+	font-size: 2rem;
+	font-weight: 100;
+}
+.extra-stats {
+	display: flex;
+	flex-direction: column;
+	background-color: var(--off-black);
+	border-radius: 3px;
+	padding: 0.5rem 0.2rem;
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BsFillCloudMoonFill } from 'react-icons/bs';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import '../assets/style/dashboard.css';
@@ -12,7 +12,7 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 export default function Dashboard() {
 	const [loading, setLoading] = useState(true);
 	const [searchState, setSearchState] = useState('');
-	const [weatherData, setWeatherData] = useState({});
+	const [weatherData, setWeatherData] = useState();
 	const [history, setHistory] = useState(() => {
 		return JSON.parse(localStorage.getItem('search-history')) || [];
 	});
@@ -35,6 +35,8 @@ export default function Dashboard() {
 					`http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${search}&days=5&aqi=yes&alerts=no`
 				)
 				.then((res) => {
+					setWeatherData(res.data);
+
 					if (history.length > 4) {
 						const newHistory = history;
 						newHistory.pop();
@@ -45,8 +47,6 @@ export default function Dashboard() {
 							},
 							...newHistory,
 						]);
-						console.log(newHistory);
-						console.log(history);
 					} else {
 						setHistory((history) => [
 							{
@@ -55,14 +55,10 @@ export default function Dashboard() {
 							},
 							...history,
 						]);
-						console.log(history);
 					}
-
-					setWeatherData(res.data);
 				})
 				.catch((err) => console.log(`Error: ${err}`));
 		}
-
 		setSearchState('');
 	};
 
@@ -74,10 +70,11 @@ export default function Dashboard() {
 				)
 				.then((res) => {
 					setWeatherData(res.data);
+
 					const newHistory = history.filter((item) => {
 						return item.text !== value;
 					});
-					console.log(newHistory);
+
 					if (history.length > 5) {
 						newHistory.pop();
 						console.log(newHistory);
@@ -109,13 +106,13 @@ export default function Dashboard() {
 
 			if (!weatherData) {
 				setWeatherData(location.state.data);
+				console.log(location.state.data);
 			}
 
-			setLoading(!loading);
+			setLoading(false);
 		};
 
 		fetchData();
-		console.log(weatherData);
 	}, [weatherData]);
 
 	return (
@@ -158,8 +155,14 @@ export default function Dashboard() {
 					<h1>Loading...</h1>
 				) : (
 					<>
-						<CurrentForecast />
-						<DailyForecast />
+						<CurrentForecast
+							location={weatherData.location}
+							current={weatherData.current}
+						/>
+						<DailyForecast
+							location={weatherData.location}
+							forecast={weatherData.forecast}
+						/>
 					</>
 				)}
 			</section>

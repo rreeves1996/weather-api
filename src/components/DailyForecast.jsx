@@ -1,16 +1,8 @@
 import React from 'react';
 
-export function HourlyForecast() {
+export default function DailyForecast(props) {
 	return (
-		<section className='hourly'>
-			<h6>Hourly forecast:</h6>
-		</section>
-	);
-}
-
-export default function DailyForecast() {
-	return (
-		<section className='daily'>
+		<section className='daily container'>
 			<h6>Daily forecast:</h6>
 		</section>
 	);

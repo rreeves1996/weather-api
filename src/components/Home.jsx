@@ -31,7 +31,6 @@ export default function Home() {
 
 		setSearchState('');
 	};
-
 	return (
 		<div className='home-container container'>
 			<header>
