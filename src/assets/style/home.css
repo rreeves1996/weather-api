@@ -1,9 +1,9 @@
 .home-container {
 	flex-direction: column;
 	justify-content: center;
-	width: 40%;
-	min-width: 500px;
-	padding: 1rem 3rem;
+	width: 30%;
+	min-width: 25rem;
+	padding: 1.5rem;
 }
 .home-container header {
 	display: flex;

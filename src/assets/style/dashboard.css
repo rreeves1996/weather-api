@@ -1,12 +1,17 @@
 .dashboard {
 	display: flex;
-	width: 90%;
+	width: 100%;
 }
 .dashboard-search {
-	padding: 2rem 2.5rem;
-	width: 25%;
+	padding: 1rem 2rem;
+	width: calc(20% - 0.8rem);
+	margin-left: 1.3rem !important;
 	display: flex;
 	flex-direction: column;
+}
+.dashboard-search .cloud {
+	margin: 0 0 0.6rem;
+	transform: translateX(0.4rem);
 }
 .dashboard-search header {
 	display: flex;
@@ -43,8 +48,15 @@
 	transform: translateY(-1px);
 }
 .forecast {
-	width: 75%;
+	width: 80%;
 	height: 100%;
+}
+.current {
+	margin-bottom: 1.6rem;
+	height: calc(51% - 1.6rem);
+}
+.daily {
+	height: calc(49% - 1.1rem) !important;
 }
 .current .container,
 .daily {
@@ -52,7 +64,6 @@
 	padding: 2rem 2.5rem;
 }
 .current .container {
-	min-height: 377px;
 	color: var(--off-white);
 }
 .dashboard-header {
@@ -60,9 +71,11 @@
 	justify-content: space-between;
 	flex-direction: column;
 	width: fit-content;
+	height: 100% !important;
 }
 .dashboard-header header {
 	width: fit fit-content;
+
 	padding-bottom: 1rem;
 }
 .sub-header {

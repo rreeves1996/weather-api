@@ -10,15 +10,15 @@ body {
 nav {
 	display: flex;
 	justify-content: center;
-	height: 4rem;
-	filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.959));
+	height: 5rem;
+	filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.5));
 	background-color: var(--app-primary-dark);
-	margin-bottom: 2rem;
+	margin-bottom: 0.6rem;
 }
 main {
 	display: flex;
 	justify-content: center;
-	min-height: calc(100vh - 8rem);
+	min-height: calc(100vh - 8.6rem);
 	width: 100vw;
 	text-shadow: 1px 1px 2px black;
 }
@@ -28,7 +28,10 @@ footer {
 	justify-content: center;
 	align-items: center;
 	width: 100vw;
-	height: 2rem;
+	height: 3rem;
+}
+footer p {
+	margin-bottom: 0;
 }
 button {
 	border: none;
@@ -74,7 +77,7 @@ input:focus {
 .container {
 	display: flex;
 	background-color: var(--app-primary-dark);
-	margin: 1rem;
+	margin: 0.8rem;
 	border-radius: 6px;
 	filter: drop-shadow(1px 3px 3px rgba(0, 0, 0, 0.404));
 	height: fit-content;

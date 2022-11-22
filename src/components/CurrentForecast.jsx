@@ -95,6 +95,7 @@ export default function CurrentForecast(props) {
 							</div>
 						</div>
 					</section>
+					<section className='dashboard-hourly'></section>
 				</>
 			)}
 		</section>

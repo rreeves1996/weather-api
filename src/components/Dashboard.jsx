@@ -120,7 +120,6 @@ export default function Dashboard() {
 			<div className='dashboard-search container'>
 				<header>
 					<BsFillCloudMoonFill className='cloud' />
-					<h5>Search for another location:</h5>
 				</header>
 				<section className='search'>
 					<form className='search-form' onSubmit={handleSearchSubmit}>
@@ -128,7 +127,7 @@ export default function Dashboard() {
 							className='search'
 							type='text'
 							onChange={handleChange}
-							placeholder='City, state, or zip code...'
+							placeholder='Search for another location...'
 						/>
 						<button type='submit'>Search</button>
 					</form>
