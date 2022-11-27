@@ -105,7 +105,16 @@
 	font-size: 0.8rem;
 }
 .daily {
+	flex-direction: column;
 	min-height: 250px;
+}
+.daily h3 {
+	display: flex;
+	align-items: center;
+	font-family: 'Alumni Sans Pinstripe';
+	font-size: 3rem;
+	margin-top: -0.5rem;
+	font-weight: 900;
 }
 .current header h1,
 .current header h4,
@@ -126,10 +135,22 @@
 	font-size: 2rem;
 	font-weight: 100;
 }
-.extra-stats {
+.extra-stats,
+.forecast-container {
 	display: flex;
-	flex-direction: column;
+	height: 100%;
+	width: 100%;
 	background-color: var(--off-black);
 	border-radius: 3px;
-	padding: 0.5rem 0.2rem;
+}
+.forecast-container {
+	padding: 0 0.8rem;
+}
+.extra-stats {
+	flex-direction: column;
+	padding: 0.5rem 0.5rem;
+}
+.calender {
+	font-size: 2rem;
+	margin: 0 0.5rem;
 }

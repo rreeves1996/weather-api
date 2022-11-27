@@ -1,0 +1,35 @@
+:root {
+	--app-primary: rgb(132, 53, 197);
+	--app-primary-dark: rgb(73, 32, 107);
+	--off-white: rgb(238, 234, 234);
+	--off-black: rgb(31, 19, 39);
+}
+
+.forecast-card {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	text-align: center;
+	height: calc(100% - 2.4rem);
+	width: calc(20% - 1.6rem);
+	margin: 1.2rem 0.8rem;
+	padding: 0.8rem 1.2rem;
+	background-color: var(--app-primary);
+	border-radius: 6px;
+}
+.forecast-card h4 {
+	font-family: 'Alumni Sans Pinstripe';
+	font-size: 2.5rem;
+	letter-spacing: 0.2rem;
+}
+.forecast-card h6 {
+	display: flex;
+	font-size: 0.8rem;
+	height: 1rem;
+}
+.forecast-icon {
+	margin: -0.8rem 0 0.4rem;
+	display: flex;
+	width: 5.5rem;
+}

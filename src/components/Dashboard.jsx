@@ -106,7 +106,6 @@ export default function Dashboard() {
 
 			if (!weatherData) {
 				setWeatherData(location.state.data);
-				console.log(location.state.data);
 			}
 
 			setLoading(false);
@@ -158,10 +157,7 @@ export default function Dashboard() {
 							location={weatherData.location}
 							current={weatherData.current}
 						/>
-						<DailyForecast
-							location={weatherData.location}
-							forecast={weatherData.forecast}
-						/>
+						<DailyForecast forecast={weatherData.forecast.forecastday} />
 					</>
 				)}
 			</section>
