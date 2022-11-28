@@ -1,24 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import { MdChevronRight } from 'react-icons/md';
 
-export default function CurrentForecast(props) {
-	const [uvColor, setUvColor] = useState('');
-	const currentWeather = props.current;
-	const currentLocation = props.location;
-	const currentCondition = currentWeather.condition;
+export default function CurrentForecast({ data, current, weatherCode }) {
+	const [windDirection, setWindDirection] = useState();
+	const index = data.hourly.time.indexOf(current.time);
+	const dayIndex = data.daily.time.indexOf(current.time.slice(0, 10));
 
 	useEffect(() => {
-		if (currentWeather.uv > 1) {
-			setUvColor('orange');
-		} else if (currentWeather.uv > 3) {
-			setUvColor('red');
-		} else if (currentWeather.uv === 1) {
-			setUvColor('green');
+		// Logic to set wind direction
+		const direction = data.current_weather.winddirection;
+
+		if (direction < 25) {
+			setWindDirection('N');
+		} else if (direction < 70) {
+			setWindDirection('NE');
+		} else if (direction < 115) {
+			setWindDirection('E');
+		} else if (direction < 160) {
+			setWindDirection('SE');
+		} else if (direction < 205) {
+			setWindDirection('S');
+		} else if (direction < 250) {
+			setWindDirection('SW');
+		} else if (direction < 295) {
+			setWindDirection('W');
+		} else if (direction < 340) {
+			setWindDirection('NW');
+		} else {
+			setWindDirection('N');
 		}
 	}, []);
+
 	return (
 		<section className='current'>
-			{!currentWeather || !currentLocation ? (
+			{!current ? (
 				<section className='dashboard-header container'>
 					<h1>No data - try searching</h1>
 				</section>
@@ -27,70 +42,46 @@ export default function CurrentForecast(props) {
 					<section className='dashboard-header container'>
 						<header>
 							<h1>
-								<strong>{props.location.name}</strong>{' '}
+								<strong>{current.city}</strong>{' '}
 							</h1>
-							<h4 className='region'>{props.location.region}</h4>
+							<h4 className='region'>{current.state}</h4>
 						</header>
 						<div className='sub-header'>
 							<h6>
-								<img src={currentCondition.icon} alt='weather-icon' />{' '}
-								{currentCondition.text}
+								<img
+									src={weatherCode.icon}
+									alt='weather-icon'
+									className='weather-icon'
+								/>{' '}
+								{weatherCode.text}
 							</h6>
 							<p>
 								It is currently{' '}
-								{currentLocation.country === 'United States of America' ? (
-									<>
-										<strong>{currentWeather.temp_f}°</strong> (F)
-									</>
-								) : (
-									<>
-										<strong>{currentWeather.temp_c}°</strong> (C)
-									</>
-								)}{' '}
-								and <strong>{currentCondition.text}</strong> with{' '}
-								<strong>{currentWeather.humidity}%</strong> humidity.
+								<strong>{data.current_weather.temperature}°</strong> (F) with{' '}
+								<strong>{data.hourly.relativehumidity_2m[index]}%</strong>{' '}
+								humidity.
 							</p>
 							<div className='extra-stats'>
 								<span>
 									<MdChevronRight />
 									Feels like:{' '}
-									{currentLocation.country === 'United States of America' ? (
-										<>
-											<strong>{currentWeather.feelslike_f}°</strong> (F)
-										</>
-									) : (
-										<>
-											<strong>{currentWeather.feelslike_c}°</strong> (C)
-										</>
-									)}
+									<strong>
+										{data.hourly.apparent_temperature[index]}°
+									</strong>{' '}
+									(F)
 								</span>
 								<span>
 									<MdChevronRight />
-									Wind:{' '}
-									{currentLocation.country === 'United States of America' ? (
-										<>
-											<strong>{currentWeather.wind_mph}/mph</strong>
-										</>
-									) : (
-										<>
-											<strong>{currentWeather.wind_kph}/kph</strong>
-										</>
-									)}
+									Wind: <strong>{data.hourly.windspeed_80m[index]}</strong>/mph
 								</span>
 								<span>
 									<MdChevronRight />
-									Direction: <strong>{currentWeather.wind_dir}</strong>
+									Direction: <strong>{windDirection}</strong>
 								</span>
 								<span>
 									<MdChevronRight />
-									UV Index:{' '}
-									<strong
-										style={{
-											backgroundColor: uvColor,
-											padding: '0 4px',
-										}}>
-										{currentWeather.uv}
-									</strong>
+									Precipitation total:{' '}
+									<strong>{data.daily.precipitation_sum[dayIndex]}</strong> in.
 								</span>
 							</div>
 						</div>

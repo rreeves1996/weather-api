@@ -13,13 +13,12 @@ nav {
 	height: 5rem;
 	filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.5));
 	background-color: var(--app-primary-dark);
-	margin-bottom: 0.6rem;
+	margin-bottom: 0.8rem;
 }
 main {
 	display: flex;
 	justify-content: center;
-	min-height: calc(100vh - 8.6rem);
-	width: 100vw;
+	min-height: calc(100vh - 8.8rem);
 	text-shadow: 1px 1px 2px black;
 }
 footer {
