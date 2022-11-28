@@ -6,18 +6,25 @@ import { v4 as uuidv4 } from 'uuid';
 import '../assets/style/dashboard.css';
 import CurrentForecast from './CurrentForecast';
 import DailyForecast from './DailyForecast';
+const images = importAll(require.context('../assets/icons', false, /\.(png)$/));
 
-const API_KEY = process.env.REACT_APP_API_KEY;
+function importAll(r) {
+	let images = {};
+	r.keys().map((item, index) => {
+		images[item.replace('./', '')] = r(item);
+	});
+	return images;
+}
 
 export default function Dashboard() {
 	const [loading, setLoading] = useState(true);
 	const [searchState, setSearchState] = useState('');
 	const [weatherData, setWeatherData] = useState();
 	const [weatherCode, setWeatherCode] = useState({});
-	const [windDirection, setWindDirection] = useState();
 	const [history, setHistory] = useState(() => {
 		return JSON.parse(localStorage.getItem('search-history')) || [];
 	});
+
 	const location = useLocation();
 
 	const handleChange = (event) => {
@@ -34,70 +41,106 @@ export default function Dashboard() {
 		if (search) {
 			axios
 				.get(
-					`http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${search}&days=5&aqi=yes&alerts=no`
+					// Geolocater gets the requested city's latitude and longitude
+					`https://geocoding-api.open-meteo.com/v1/search?name=${search}`
 				)
 				.then((res) => {
-					setWeatherData(res.data);
+					const lat = res.data.results[0].latitude;
+					const lon = res.data.results[0].longitude;
 
-					if (history.length > 4) {
-						const newHistory = history;
-						newHistory.pop();
-						setHistory((history) => [
-							{
-								id: uuidv4(),
-								text: search,
-							},
-							...newHistory,
-						]);
-					} else {
-						setHistory((history) => [
-							{
-								id: uuidv4(),
-								text: search,
-							},
-							...history,
-						]);
-					}
-				})
-				.catch((err) => console.log(`Error: ${err}`));
+					// Format timezone into URL friendly format
+					const unformattedTime = res.data.results[0].timezone.split('/');
+					const timezone = `${
+						unformattedTime[0] ? unformattedTime[0] : unformattedTime
+					}${unformattedTime[0] && `%2F${unformattedTime[1]}`}`;
+
+					axios
+						.get(
+							`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,weathercode,windspeed_80m,winddirection_80m,shortwave_radiation_instant&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=${timezone}`
+						)
+						.then((res) => {
+							setWeatherData(res.data);
+
+							const newHistory = history.filter((item) => {
+								return item.text !== search;
+							});
+
+							if (history.length > 5) {
+								newHistory.pop();
+								console.log(newHistory);
+								setHistory((history) => [
+									{
+										id: uuidv4(),
+										text: search,
+									},
+									...newHistory,
+								]);
+							} else {
+								setHistory((history) => [
+									{
+										id: uuidv4(),
+										text: search,
+									},
+									...newHistory,
+								]);
+							}
+						})
+						.catch((err) => console.log(`Error: ${err}`));
+				});
 		}
 		setSearchState('');
 	};
 
-	const handleQueryReq = (value) => {
-		if (value) {
+	const handleQueryReq = (query) => {
+		if (query) {
 			axios
 				.get(
-					`http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${value}&days=5&aqi=yes&alerts=no`
+					// Geolocater gets the requested city's latitude and longitude
+					`https://geocoding-api.open-meteo.com/v1/search?name=${query}`
 				)
 				.then((res) => {
-					setWeatherData(res.data);
+					const lat = res.data.results[0].latitude;
+					const lon = res.data.results[0].longitude;
 
-					const newHistory = history.filter((item) => {
-						return item.text !== value;
-					});
+					// Format timezone into URL friendly format
+					const unformattedTime = res.data.results[0].timezone.split('/');
+					const timezone = `${
+						unformattedTime[0] ? unformattedTime[0] : unformattedTime
+					}${unformattedTime[0] && `%2F${unformattedTime[1]}`}`;
 
-					if (history.length > 5) {
-						newHistory.pop();
-						console.log(newHistory);
-						setHistory((history) => [
-							{
-								id: uuidv4(),
-								text: value,
-							},
-							...newHistory,
-						]);
-					} else {
-						setHistory((history) => [
-							{
-								id: uuidv4(),
-								text: value,
-							},
-							...newHistory,
-						]);
-					}
-				})
-				.catch((err) => console.log(`Error: ${err}`));
+					axios
+						.get(
+							`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,weathercode,windspeed_80m,winddirection_80m,shortwave_radiation_instant&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=${timezone}`
+						)
+						.then((res) => {
+							setWeatherData(res.data);
+
+							const newHistory = history.filter((item) => {
+								return item.text !== query;
+							});
+
+							if (history.length > 5) {
+								newHistory.pop();
+								console.log(newHistory);
+								setHistory((history) => [
+									{
+										id: uuidv4(),
+										text: query,
+									},
+									...newHistory,
+								]);
+							} else {
+								setHistory((history) => [
+									{
+										id: uuidv4(),
+										text: query,
+									},
+									...newHistory,
+								]);
+							}
+						})
+						.catch((err) => console.log(`Error: ${err}`));
+				});
 		}
 	};
 
@@ -128,114 +171,125 @@ export default function Dashboard() {
 						if (currentTime < sunrise || currentTime > sunset) {
 							setWeatherCode({
 								text: 'Clear skies',
-								icon: 'https://www.weatherbit.io/static/img/icons/c01d.png',
+								icon: images['clearday.png'],
 							});
-							break;
 						} else {
 							setWeatherCode({
 								text: 'Clear skies',
-								icon: 'https://www.weatherbit.io/static/img/icons/c01n.png',
+								icon: images['clearnight.png'],
 							});
-							break;
 						}
+						break;
 					case 1:
 						if (currentTime < sunrise || currentTime > sunset) {
 							setWeatherCode({
 								text: 'Mostly clear',
-								icon: 'https://www.weatherbit.io/static/img/icons/c02d.png',
+								icon: images['mostlyclearday.png'],
 							});
-							break;
 						} else {
 							setWeatherCode({
 								text: 'Mostly clear',
-								icon: 'https://www.weatherbit.io/static/img/icons/c02n.png',
+								icon: images['mostlyclearnight.png'],
 							});
-							break;
 						}
+						break;
 					case 2:
 						if (currentTime < sunrise || currentTime > sunset) {
 							setWeatherCode({
 								text: 'Partly cloudy',
-								icon: 'https://www.weatherbit.io/static/img/icons/c03d.png',
+								icon: images['partycloudyday.png'],
 							});
-							break;
 						} else {
 							setWeatherCode({
 								text: 'Partly cloudy',
-								icon: 'https://www.weatherbit.io/static/img/icons/c03n.png',
+								icon: images['partycloudynight.png'],
 							});
-							break;
 						}
+						break;
 					case 3:
 						setWeatherCode({
 							text: 'Overcast',
-							icon: 'https://www.weatherbit.io/static/img/icons/c04d.png',
+							icon: images['overcast.png'],
 						});
 						break;
-					case (45, 48):
+					case 45:
+					case 48:
+						setWeatherCode({
+							text: 'Fog',
+							icon: images['fog.png'],
+						});
+						break;
+					case 51:
+					case 53:
+					case 55:
+					case 56:
+					case 57:
 						if (currentTime < sunrise || currentTime > sunset) {
 							setWeatherCode({
-								text: 'Fog',
-								icon: 'https://www.weatherbit.io/static/img/icons/a05d.png',
+								text: 'Drizzle',
+								icon: images['drizzleday.png'],
 							});
-							break;
 						} else {
 							setWeatherCode({
-								text: 'Fog',
-								icon: 'https://www.weatherbit.io/static/img/icons/a05n.png',
+								text: 'Drizzle',
+								icon: images['drizzlenight.png'],
 							});
-							break;
 						}
-					case (51, 53, 55, 56, 57):
-						setWeatherCode({
-							text: 'Drizzle',
-							icon: 'https://www.weatherbit.io/static/img/icons/a05d.png',
-						});
 						break;
-					case (61, 63, 65, 66, 67):
+					case 61:
+					case 63:
+					case 65:
+					case 66:
+					case 67:
 						setWeatherCode({
 							text: 'Rain',
-							icon: 'https://www.weatherbit.io/static/img/icons/r01d.png',
+							icon: images['rain.png'],
 						});
 						break;
-					case (71, 73, 75, 77):
+					case 71:
+					case 73:
+					case 75:
+					case 77:
 						setWeatherCode({
 							text: 'Snow',
-							icon: 'https://www.weatherbit.io/static/img/icons/s02d.png',
+							icon: images['snow.png'],
 						});
 						break;
-					case (80, 81, 82):
+					case 80:
+					case 81:
+					case 82:
 						if (currentTime < sunrise || currentTime > sunset) {
 							setWeatherCode({
 								text: 'Rain showers',
-								icon: 'https://www.weatherbit.io/static/img/icons/r05d.png',
+								icon: images['rainshowersday.png'],
 							});
-							break;
 						} else {
 							setWeatherCode({
 								text: 'Rain showers',
-								icon: 'https://www.weatherbit.io/static/img/icons/r05n.png',
+								icon: images['rainshowersnight.png'],
 							});
-							break;
 						}
-					case (85, 86):
+						break;
+					case 85:
+					case 86:
 						if (currentTime < sunrise || currentTime > sunset) {
 							setWeatherCode({
 								text: 'Snow showers',
-								icon: 'https://www.weatherbit.io/static/img/icons/s01d.png',
+								icon: images['snowshowersday.png'],
 							});
-							break;
 						} else {
 							setWeatherCode({
 								text: 'Snow showers',
-								icon: 'https://www.weatherbit.io/static/img/icons/s01n.png',
+								icon: images['snowshowersnight.png'],
 							});
-							break;
 						}
-					case (95, 96, 99):
+						break;
+					case 95:
+					case 96:
+					case 99:
 						setWeatherCode({
 							text: 'Thunderstorm',
-							icon: 'https://www.weatherbit.io/static/img/icons/t04d.png',
+							icon: images['thunderstorm'],
 						});
 						break;
 					default:

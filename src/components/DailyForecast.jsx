@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { SlCalender } from 'react-icons/sl';
 import ForecastDay from './cards/ForecastDay';
@@ -15,7 +16,8 @@ export default function DailyForecast({ forecast }) {
 				{
 					high: forecast.temperature_2m_max[i],
 					low: forecast.temperature_2m_min[i],
-					date: forecast.time[i],
+					date: dayjs().day(i).format('MMM D YYYY'),
+					day: dayjs().day(i).format('dddd'),
 					weather: forecast.weathercode[i],
 				},
 			]);
@@ -30,9 +32,7 @@ export default function DailyForecast({ forecast }) {
 			</h3>
 			<div className='forecast-container'>
 				{loading ? (
-					<>
-						<h1>Loading</h1>
-					</>
+					<></>
 				) : (
 					<>
 						{days.map((day) => (
@@ -41,6 +41,7 @@ export default function DailyForecast({ forecast }) {
 								high={day.high}
 								low={day.low}
 								date={day.date}
+								day={day.day}
 								weathercode={day.weather}
 							/>
 						))}
