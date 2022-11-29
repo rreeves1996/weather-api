@@ -62,6 +62,7 @@
 	margin-bottom: 0.4rem !important;
 }
 .current {
+	display: flex;
 	height: fit-content;
 	margin-bottom: 1.6rem;
 }
@@ -116,13 +117,29 @@
 	flex-direction: column;
 	flex-grow: 1 !important;
 }
-.daily h3 {
+.hourly {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	padding: 0 0.8rem 0 0;
+}
+.daily h3,
+.hourly h3 {
 	display: flex;
 	align-items: center;
 	font-family: 'Alumni Sans Pinstripe';
 	font-size: 3rem;
 	margin-top: -0.5rem;
 	font-weight: 900;
+}
+.hourly h3 {
+	background-color: var(--app-primary-dark);
+	font-size: 5rem;
+	padding: 0 1.5rem;
+	border-radius: 6px;
+	margin: 0 !important;
 }
 .current header h1,
 .current header h4,

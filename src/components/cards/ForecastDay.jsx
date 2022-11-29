@@ -124,8 +124,6 @@ export default function ForecastDay({ high, low, date, day, weathercode }) {
 	}, []);
 
 	const renderIcon = (text) => {
-		console.log(text);
-
 		if (text === 'Clear') {
 			return <RiSunFill className='forecast-mini-icon' />;
 		} else if (text === 'Cloudy') {
