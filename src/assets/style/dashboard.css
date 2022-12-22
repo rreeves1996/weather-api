@@ -74,6 +74,9 @@
 .current .container {
 	color: var(--off-white);
 }
+.daily.container {
+	min-width: 100% !important;
+}
 .dashboard-header {
 	display: flex;
 	margin: 0 !important;
