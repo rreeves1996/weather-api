@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { BsFillCloudMoonFill } from 'react-icons/bs';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import '../assets/style/dashboard.css';
 import CurrentForecast from './CurrentForecast';
 import DailyForecast from './DailyForecast';
+import Search from './Search';
 const images = importAll(require.context('../assets/icons', false, /\.(png)$/));
 
 function importAll(r) {
@@ -18,7 +18,6 @@ function importAll(r) {
 
 export default function Dashboard() {
 	const [loading, setLoading] = useState(true);
-	const [searchState, setSearchState] = useState('');
 	const [weatherData, setWeatherData] = useState();
 	const [weatherCode, setWeatherCode] = useState({});
 	const [history, setHistory] = useState(() => {
@@ -27,17 +26,8 @@ export default function Dashboard() {
 
 	const location = useLocation();
 
-	const handleChange = (event) => {
-		const value = event.target.value;
-
-		setSearchState(value);
-	};
-
-	const handleSearchSubmit = async (event) => {
-		event.preventDefault();
-
-		const search = searchState.trim();
-
+	const handleSearch = async (search) => {
+		console.log(search);
 		if (search) {
 			axios
 				.get(
@@ -45,6 +35,7 @@ export default function Dashboard() {
 					`https://geocoding-api.open-meteo.com/v1/search?name=${search}`
 				)
 				.then((res) => {
+					console.log(res);
 					const lat = res.data.results[0].latitude;
 					const lon = res.data.results[0].longitude;
 
@@ -88,7 +79,6 @@ export default function Dashboard() {
 						.catch((err) => console.log(`Error: ${err}`));
 				});
 		}
-		setSearchState('');
 	};
 
 	const handleQueryReq = (query) => {
@@ -305,38 +295,11 @@ export default function Dashboard() {
 
 	return (
 		<div className='dashboard'>
-			<div className='dashboard-search container'>
-				<header>
-					<BsFillCloudMoonFill className='cloud' />
-				</header>
-				<section className='search'>
-					<form className='search-form' onSubmit={handleSearchSubmit}>
-						<input
-							className='search'
-							type='text'
-							onChange={handleChange}
-							placeholder='Search for another location...'
-						/>
-						<button type='submit'>Search</button>
-					</form>
-				</section>
-				{history ? (
-					<section className='history'>
-						<h5>History:</h5>
-						<div className='history-item-container'>
-							{history.map((item) => (
-								<p
-									className='history-item'
-									onClick={() => handleQueryReq(item.text)}>
-									{item.text}
-								</p>
-							))}
-						</div>
-					</section>
-				) : (
-					<></>
-				)}
-			</div>
+			<Search
+				handleSearch={handleSearch}
+				handleQueryReq={handleQueryReq}
+				history={history}
+			/>
 			<section className='forecast'>
 				{loading ? (
 					<h1>Loading...</h1>

@@ -46,7 +46,7 @@ export default function CurrentForecast({ data, current, weatherCode }) {
 		}
 
 		setLoading(false);
-	}, []);
+	}, [data]);
 
 	if (loading) {
 		return <h1>Loading</h1>;
