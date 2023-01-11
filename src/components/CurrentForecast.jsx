@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { MdChevronRight } from 'react-icons/md';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function CurrentForecast({ data, current, weatherCode }) {
 	const [loading, setLoading] = useState(true);
 	const [hourlyData, setHourlyData] = useState([]);
 	const [windDirection, setWindDirection] = useState();
-	const index = data.hourly.time.indexOf(current.time);
-	const dayIndex = data.daily.time.indexOf(current.time.slice(0, 10));
+	const [hourlyIndex, setHourlyIndex] = useState();
+	const [dayIndex, setDayIndex] = useState();
 
-	console.log(data);
 	useEffect(() => {
 		if (data) {
+			const daily = data.daily.time.indexOf(current.time.slice(0, 10));
+			const hourly = data.hourly.time.indexOf(current.time);
+			setDayIndex(daily);
+			setHourlyIndex(hourly);
 			// Logic to set wind direction
 			const direction = data.current_weather.winddirection;
 
@@ -38,8 +42,8 @@ export default function CurrentForecast({ data, current, weatherCode }) {
 				setHourlyData((hourlyData) => [
 					...hourlyData,
 					{
-						time: data.hourly.time[index + i].slice(11, 13),
-						weathercode: data.hourly.weathercode[index + i],
+						time: data.hourly.time[hourly + i].slice(11, 13),
+						weathercode: data.hourly.weathercode[hourly + i],
 					},
 				]);
 			}
@@ -78,7 +82,9 @@ export default function CurrentForecast({ data, current, weatherCode }) {
 								<p>
 									It is currently{' '}
 									<strong>{data.current_weather.temperature}°</strong> (F) with{' '}
-									<strong>{data.hourly.relativehumidity_2m[index]}%</strong>{' '}
+									<strong>
+										{data.hourly.relativehumidity_2m[hourlyIndex]}%
+									</strong>{' '}
 									humidity.
 								</p>
 								<div className='extra-stats'>
@@ -86,13 +92,14 @@ export default function CurrentForecast({ data, current, weatherCode }) {
 										<MdChevronRight />
 										Feels like:{' '}
 										<strong>
-											{data.hourly.apparent_temperature[index]}°
+											{data.hourly.apparent_temperature[hourlyIndex]}°
 										</strong>{' '}
 										(F)
 									</span>
 									<span>
 										<MdChevronRight />
-										Wind: <strong>{data.hourly.windspeed_80m[index]}</strong>
+										Wind:{' '}
+										<strong>{data.hourly.windspeed_80m[hourlyIndex]}</strong>
 										/mph
 									</span>
 									<span>
@@ -117,7 +124,7 @@ export default function CurrentForecast({ data, current, weatherCode }) {
 							</header>
 							<div className='hours-container'>
 								{hourlyData.map((hour) => (
-									<div className='hour-container'>
+									<div className='hour-container' key={uuidv4()}>
 										<h4 className='hour-time'></h4>
 										<div className='hour-icon'></div>
 										<h4 className='hour-forecast'></h4>

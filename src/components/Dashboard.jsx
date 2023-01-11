@@ -6,6 +6,7 @@ import '../assets/style/dashboard.css';
 import CurrentForecast from './CurrentForecast';
 import DailyForecast from './DailyForecast';
 import Search from './Search';
+import useFetch from '../hooks/useFetch';
 const images = importAll(require.context('../assets/icons', false, /\.(png)$/));
 
 function importAll(r) {
@@ -17,6 +18,7 @@ function importAll(r) {
 }
 
 export default function Dashboard() {
+	const { fetchCoordinates, fetchLocation } = useFetch();
 	const [loading, setLoading] = useState(true);
 	const [weatherData, setWeatherData] = useState();
 	const [weatherCode, setWeatherCode] = useState({});
@@ -28,62 +30,48 @@ export default function Dashboard() {
 
 	const handleSearch = async (search) => {
 		console.log(search);
+
 		if (search) {
-			axios
-				.get(
-					// Geolocater gets the requested city's latitude and longitude
-					`https://geocoding-api.open-meteo.com/v1/search?name=${search}`
-				)
-				.then((res) => {
-					console.log(res);
-					const lat = res.data.results[0].latitude;
-					const lon = res.data.results[0].longitude;
+			try {
+				const coordinates = await fetchCoordinates(search);
+				const res = await fetchLocation(coordinates);
 
-					// Format timezone into URL friendly format
-					const unformattedTime = res.data.results[0].timezone.split('/');
-					const timezone = `${
-						unformattedTime[0] ? unformattedTime[0] : unformattedTime
-					}${unformattedTime[0] && `%2F${unformattedTime[1]}`}`;
+				console.log(res);
 
-					axios
-						.get(
-							`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,weathercode,windspeed_80m,winddirection_80m,shortwave_radiation_instant&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=${timezone}`
-						)
-						.then((res) => {
-							setWeatherData(res.data);
+				setWeatherData((prevState) => res.data).then(() => {
+					const newHistory = history.filter((item) => {
+						return item.text !== search;
+					});
 
-							const newHistory = history.filter((item) => {
-								return item.text !== search;
-							});
-
-							if (history.length > 5) {
-								newHistory.pop();
-								console.log(newHistory);
-								setHistory((history) => [
-									{
-										id: uuidv4(),
-										text: search,
-									},
-									...newHistory,
-								]);
-							} else {
-								setHistory((history) => [
-									{
-										id: uuidv4(),
-										text: search,
-									},
-									...newHistory,
-								]);
-							}
-						})
-						.catch((err) => console.log(`Error: ${err}`));
+					if (history.length > 5) {
+						newHistory.pop();
+						console.log(newHistory);
+						setHistory((history) => [
+							{
+								id: uuidv4(),
+								text: search,
+							},
+							...newHistory,
+						]);
+					} else {
+						setHistory((history) => [
+							{
+								id: uuidv4(),
+								text: search,
+							},
+							...newHistory,
+						]);
+					}
 				});
+			} catch (err) {
+				console.error(`Error: ${err}`);
+			}
 		}
 	};
 
-	const handleQueryReq = (query) => {
+	const handleQueryReq = async (query) => {
 		if (query) {
-			axios
+			await axios
 				.get(
 					// Geolocater gets the requested city's latitude and longitude
 					`https://geocoding-api.open-meteo.com/v1/search?name=${query}`
@@ -105,6 +93,7 @@ export default function Dashboard() {
 						.then((res) => {
 							setWeatherData(res.data);
 
+							console.log(res.data);
 							const newHistory = history.filter((item) => {
 								return item.text !== query;
 							});
@@ -135,6 +124,7 @@ export default function Dashboard() {
 	};
 
 	useEffect(() => {
+		console.log('render');
 		const fetchData = () => {
 			history &&
 				localStorage.setItem('search-history', JSON.stringify(history));
@@ -291,7 +281,7 @@ export default function Dashboard() {
 		};
 
 		fetchData();
-	}, [weatherData]);
+	}, []);
 
 	return (
 		<div className='dashboard'>
@@ -310,7 +300,7 @@ export default function Dashboard() {
 							current={weatherData.current}
 							weatherCode={weatherCode}
 						/>
-						<DailyForecast forecast={weatherData.data.daily} />
+						<DailyForecast forecast={weatherData.data} />
 					</>
 				)}
 			</section>

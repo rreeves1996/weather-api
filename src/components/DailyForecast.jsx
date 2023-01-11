@@ -14,11 +14,11 @@ export default function DailyForecast({ forecast }) {
 			setDays((days) => [
 				...days,
 				{
-					high: forecast.temperature_2m_max[i],
-					low: forecast.temperature_2m_min[i],
+					high: forecast.daily.temperature_2m_max[i],
+					low: forecast.daily.temperature_2m_min[i],
 					date: dayjs().day(i).format('MMM D YYYY'),
 					day: dayjs().day(i).format('dddd'),
-					weather: forecast.weathercode[i],
+					weather: forecast.daily.weathercode[i],
 				},
 			]);
 		}

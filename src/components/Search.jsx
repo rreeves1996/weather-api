@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BsFillCloudMoonFill } from 'react-icons/bs';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Search({ handleSearch, handleQueryReq, history }) {
 	const [formState, setFormState] = useState({ search: '' });
@@ -48,7 +49,8 @@ export default function Search({ handleSearch, handleQueryReq, history }) {
 						{history.map((item) => (
 							<p
 								className='history-item'
-								onClick={() => handleQueryReq(item.text)}>
+								onClick={() => handleQueryReq(item.text)}
+								key={uuidv4()}>
 								{item.text}
 							</p>
 						))}
