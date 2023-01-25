@@ -9,6 +9,7 @@ export default function CurrentForecast({ data, current, weatherCode }) {
 	const [hourlyIndex, setHourlyIndex] = useState();
 	const [dayIndex, setDayIndex] = useState();
 
+	console.log(data);
 	useEffect(() => {
 		if (data) {
 			const daily = data.daily.time.indexOf(current.time.slice(0, 10));
@@ -47,9 +48,8 @@ export default function CurrentForecast({ data, current, weatherCode }) {
 					},
 				]);
 			}
+			setLoading(false);
 		}
-
-		setLoading(false);
 	}, [data]);
 
 	if (loading) {

@@ -8,7 +8,9 @@ export default function DailyForecast({ forecast }) {
 	const [loading, setLoading] = useState(true);
 	const [days, setDays] = useState([]);
 
+	console.log(forecast);
 	useEffect(() => {
+		setDays((prevState) => []);
 		// Create an array with objects for forecasting next 5 days
 		for (let i = 2; i < 7; i++) {
 			setDays((days) => [
@@ -24,7 +26,7 @@ export default function DailyForecast({ forecast }) {
 		}
 
 		setLoading(false);
-	}, []);
+	}, [forecast]);
 
 	return (
 		<section className='daily container'>

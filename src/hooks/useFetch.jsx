@@ -9,6 +9,7 @@ export default function useFetch() {
 				`https://geocoding-api.open-meteo.com/v1/search?name=${params}`
 			);
 			console.log(res);
+
 			return res;
 		} catch (err) {
 			console.log(err);
@@ -27,15 +28,11 @@ export default function useFetch() {
 				unformattedTime[0] ? unformattedTime[0] : unformattedTime
 			}${unformattedTime[0] && `%2F${unformattedTime[1]}`}`;
 
-			await axios
-				.get(
-					`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,weathercode,windspeed_80m,winddirection_80m,shortwave_radiation_instant&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=${timezone}`
-				)
-				.then((res) => {
-					console.log(res.data);
-					return res.data;
-				})
-				.catch((err) => console.error(`City query failed:\n${err}`));
+			const res = await axios.get(
+				`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,weathercode,windspeed_80m,winddirection_80m,shortwave_radiation_instant&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=${timezone}`
+			);
+
+			return res;
 		} catch (err) {
 			console.error(`Coordinate query failed:\n${err}`);
 		}

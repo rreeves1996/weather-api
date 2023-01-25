@@ -14,14 +14,12 @@ export default function Search({ handleSearch, handleQueryReq, history }) {
 		});
 	};
 
-	const handleSearchSubmit = (event) => {
+	const handleSearchSubmit = async (event) => {
 		event.preventDefault();
 
 		const search = formState.search.trim();
 
-		handleSearch(search);
-
-		setFormState({ search: '' });
+		await handleSearch(search);
 	};
 
 	return (
