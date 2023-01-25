@@ -4,8 +4,6 @@ import '../assets/style/home.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const API_KEY = process.env.REACT_APP_API_KEY;
-
 export default function Home() {
 	const [searchState, setSearchState] = useState('');
 	const navigate = useNavigate();
