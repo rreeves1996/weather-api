@@ -18,7 +18,6 @@ export default function useFetch() {
 
 	const fetchLocation = async (params) => {
 		try {
-			console.log(params.data.results[0].latitude);
 			const lat = params.data.results[0].latitude;
 			const lon = params.data.results[0].longitude;
 
