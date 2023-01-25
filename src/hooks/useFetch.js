@@ -8,7 +8,6 @@ export default function useFetch() {
 				// Geolocater gets the requested city's latitude and longitude
 				`https://geocoding-api.open-meteo.com/v1/search?name=${params}`
 			);
-			console.log(res);
 
 			return res;
 		} catch (err) {

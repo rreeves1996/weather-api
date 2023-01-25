@@ -3,7 +3,7 @@ import { AiFillThunderbolt } from 'react-icons/ai';
 import { GiWaterDrop } from 'react-icons/gi';
 import { RiSunFill } from 'react-icons/ri';
 import { BsCloudFill, BsCloudFogFill, BsSnow } from 'react-icons/bs';
-import '../../assets/style/card.css';
+
 const images = importAll(
 	require.context('../../assets/icons', false, /\.(png)$/)
 );

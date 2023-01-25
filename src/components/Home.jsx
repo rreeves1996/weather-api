@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { BsFillCloudMoonFill } from 'react-icons/bs';
-import '../assets/style/home.css';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import useFetch from '../hooks/useFetch';
 
