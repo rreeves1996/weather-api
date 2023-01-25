@@ -13,17 +13,17 @@
 	input {
 		text-align: center;
 	}
-	.cloud {
-		font-size: 7rem;
-		margin-bottom: 1rem;
-		filter: drop-shadow(2px 4px 5px rgba(0, 0, 0, 0.192));
-	}
-	.search {
-		width: 100%;
-	}
-	.search-form {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-	}
+}
+.cloud {
+	font-size: 7rem;
+	margin-bottom: 1rem;
+	filter: drop-shadow(2px 4px 5px rgba(0, 0, 0, 0.192));
+}
+.search {
+	width: 100%;
+}
+.search-form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }

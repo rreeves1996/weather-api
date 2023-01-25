@@ -1,7 +1,7 @@
-@import './home';
-@import './dashboard';
-@import './card';
 @import './variables';
+@import './dashboard';
+@import './home';
+@import './card';
 
 body {
 	overflow-x: hidden;
@@ -86,9 +86,6 @@ main {
 	border-radius: 6px;
 	filter: drop-shadow(1px 3px 3px rgba(0, 0, 0, 0.404));
 	height: fit-content;
-}
-.brand h1,
-.brand h4 {
 }
 .brand {
 	display: flex;
