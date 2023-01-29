@@ -54,8 +54,9 @@ export default function CurrentForecast({ data, current, weathercode }) {
 			for (let i = 1; i < 13; i++) {
 				let time;
 				let weathercode;
-				let temperature = data.hourly;
-				console.log(temperature);
+				let temperature = JSON.stringify(
+					data.hourly.temperature_2m[hourly + i]
+				).split('.');
 				data.hourly.time[hourly + i].slice(11, 13) >= 13
 					? (time = `${data.hourly.time[hourly + i].slice(11, 13) - 12}pm`)
 					: (time = `${data.hourly.time[hourly + i].slice(11, 13)}am`);
@@ -192,16 +193,16 @@ export default function CurrentForecast({ data, current, weathercode }) {
 						break;
 				}
 
-				console.log(data.hourly);
 				setHourlyData((hourlyData) => [
 					...hourlyData,
 					{
 						time,
 						weathercode,
-						temp: temperature,
+						temp: parseInt(temperature),
 					},
 				]);
 			}
+
 			setLoading(false);
 		}
 	}, [data]);
@@ -275,7 +276,8 @@ export default function CurrentForecast({ data, current, weathercode }) {
 				<div className='hours-container'>
 					{hourlyData.map((hour) => (
 						<div className='hour-container' key={uuidv4()}>
-							<h4 className='hour-time'>{hour.time}</h4>
+							<h6 className='hour-time'>{hour.time}</h6>
+							<div className='divider' />
 							<div className='hour-icon'>
 								<img
 									src={hour.weathercode.icon}
@@ -283,8 +285,8 @@ export default function CurrentForecast({ data, current, weathercode }) {
 									className='weather-icon'
 								/>
 							</div>
-							<h4 className='hour-forecast'>{hour.weathercode.text}</h4>
-							<h3 className='hour-temperature'></h3>
+							<h4 className='hour-temperature'>{hour.temp}°</h4>
+							<h6 className='hour-forecast'>{hour.weathercode.text}</h6>
 						</div>
 					))}
 				</div>

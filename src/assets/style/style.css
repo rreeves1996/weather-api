@@ -160,7 +160,10 @@
   padding: 2rem 2.5rem;
 }
 .dashboard .daily.container {
-  min-width: 100% !important;
+  width: -webkit-fit-content !important;
+  width: -moz-fit-content !important;
+  width: fit-content !important;
+  max-width: 100%;
 }
 .dashboard .hourly {
   display: flex;
@@ -179,6 +182,26 @@
 }
 .dashboard .hourly .hour-container {
   flex-direction: column;
+  text-align: center;
+  padding: 0.7rem 0 0;
+  width: 90%;
+  margin: 0.2rem;
+  border-radius: 5px;
+  background-color: #49206b;
+}
+.dashboard .hourly .hour-container .divider {
+  width: 50%;
+  height: 1px;
+  background-color: #eeeaea;
+  margin: auto;
+}
+.dashboard .hourly .hour-container .hour-forecast {
+  margin-top: -0.5rem;
+}
+.dashboard .hourly .hour-container .hour-temperature {
+  background-color: transparent;
+  margin-top: -0.5rem !important;
+  text-indent: 0.5rem;
 }
 .dashboard .extra-stats,
 .dashboard .forecast-container {
