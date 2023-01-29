@@ -177,7 +177,7 @@
   border-radius: 6px;
   margin: 0 !important;
 }
-.dashboard .hourly .hours-container {
+.dashboard .hourly .hour-container {
   flex-direction: column;
 }
 .dashboard .extra-stats,

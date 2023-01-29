@@ -280,7 +280,7 @@ export default function Dashboard() {
 						<CurrentForecast
 							data={weatherData.data}
 							current={weatherData.current}
-							weatherCode={weatherCode}
+							weathercode={weatherCode}
 						/>
 						<DailyForecast forecast={weatherData.data} />
 					</>
