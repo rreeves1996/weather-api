@@ -114,7 +114,32 @@ export default function Dashboard() {
 
 			if (!weatherData) {
 				setWeatherData(location.state);
+				console.log(location.state);
 
+				const newHistory = history.filter((item) => {
+					return item.text !== location.state.current.city;
+				});
+				console.log(weatherData);
+
+				if (history.length > 5) {
+					newHistory.pop();
+					console.log(newHistory);
+					setHistory((history) => [
+						{
+							id: uuidv4(),
+							text: location.state.current.city,
+						},
+						...newHistory,
+					]);
+				} else {
+					setHistory((history) => [
+						{
+							id: uuidv4(),
+							text: location.state.current.city,
+						},
+						...newHistory,
+					]);
+				}
 				// Logic to set weather text/weather icon based on weathercode and sunrise/sunset times
 				const currentTime = location.state.data.current_weather.time.slice(
 					11,
