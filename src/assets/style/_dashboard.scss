@@ -1,6 +1,6 @@
 .dashboard {
 	display: flex;
-	justify-content: flex-start;
+	justify-content: center;
 	/* flex-wrap: wrap; */
 	width: 100%;
 
@@ -174,31 +174,42 @@
 	.hourly {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		justify-content: space-evenly;
 		align-items: center;
 		width: 100%;
 		padding: 0 0.8rem;
 
 		h3 {
 			background-color: $appPrimaryDark;
-			font-size: 5rem;
+			font-size: 3rem;
 			padding: 0 1.5rem;
 			border-radius: 6px;
 			margin: 0 !important;
 		}
+		.chart {
+			width: 100%;
+			height: 600px;
+		}
+		.recharts-tooltip-wrapper {
+			left: 0.5rem;
+			justify-content: unset;
+			width: auto;
+
+			&:focus {
+				outline: none;
+			}
+		}
 		.hour-container {
 			flex-direction: column;
 			text-align: center;
+
 			padding: 0.7rem 0 0;
-			width: 90%;
+			width: 5rem;
 			margin: 0.2rem;
 			border-radius: 5px;
-			background-color: $appPrimaryDark;
-			.divider {
-				width: 50%;
-				height: 1px;
-				background-color: $offWhite;
-				margin: auto;
+			background-color: #49206b94;
+			.hour-icon {
+				margin-top: -1rem;
 			}
 			.hour-forecast {
 				margin-top: -0.5rem;

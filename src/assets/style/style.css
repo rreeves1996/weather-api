@@ -1,6 +1,6 @@
 .dashboard {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   /* flex-wrap: wrap; */
   width: 100%;
 }
@@ -171,32 +171,41 @@
 .dashboard .hourly {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   width: 100%;
   padding: 0 0.8rem;
 }
 .dashboard .hourly h3 {
   background-color: #49206b;
-  font-size: 5rem;
+  font-size: 3rem;
   padding: 0 1.5rem;
   border-radius: 6px;
   margin: 0 !important;
+}
+.dashboard .hourly .chart {
+  width: 100%;
+  height: 600px;
+}
+.dashboard .hourly .recharts-tooltip-wrapper {
+  left: 0.5rem;
+  justify-content: unset;
+  width: auto;
+}
+.dashboard .hourly .recharts-tooltip-wrapper:focus {
+  outline: none;
 }
 .dashboard .hourly .hour-container {
   flex-direction: column;
   text-align: center;
   padding: 0.7rem 0 0;
-  width: 90%;
+  width: 5rem;
   margin: 0.2rem;
   border-radius: 5px;
-  background-color: #49206b;
+  background-color: rgba(73, 32, 107, 0.5803921569);
 }
-.dashboard .hourly .hour-container .divider {
-  width: 50%;
-  height: 1px;
-  background-color: #eeeaea;
-  margin: auto;
+.dashboard .hourly .hour-container .hour-icon {
+  margin-top: -1rem;
 }
 .dashboard .hourly .hour-container .hour-forecast {
   margin-top: -0.5rem;

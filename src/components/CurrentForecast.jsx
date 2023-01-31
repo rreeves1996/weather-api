@@ -1,4 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import {
+	ResponsiveContainer,
+	AreaChart,
+	linearGradient,
+	Line,
+	Area,
+	XAxis,
+	YAxis,
+	Tooltip,
+} from 'recharts';
 import { MdChevronRight } from 'react-icons/md';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -15,6 +25,7 @@ function importAll(r) {
 export default function CurrentForecast({ data, current, weathercode }) {
 	const [loading, setLoading] = useState(true);
 	const [hourlyData, setHourlyData] = useState([]);
+	const [degreeRange, setDegreeRange] = useState([]);
 	const [windDirection, setWindDirection] = useState();
 	const [hourlyIndex, setHourlyIndex] = useState();
 	const [dayIndex, setDayIndex] = useState();
@@ -22,8 +33,11 @@ export default function CurrentForecast({ data, current, weathercode }) {
 	useEffect(() => {
 		if (data) {
 			setHourlyData((prevState) => []);
+			setDegreeRange((prevState) => []);
 			const daily = data.daily.time.indexOf(current.time.slice(0, 10));
 			const hourly = data.hourly.time.indexOf(current.time);
+			let maxTemp;
+			let minTemp;
 
 			setDayIndex(daily);
 			setHourlyIndex(hourly);
@@ -54,9 +68,13 @@ export default function CurrentForecast({ data, current, weathercode }) {
 			for (let i = 1; i < 13; i++) {
 				let time;
 				let weathercode;
+
+				// 'Round' temperature to closest whole number
 				let temperature = JSON.stringify(
 					data.hourly.temperature_2m[hourly + i]
 				).split('.');
+
+				// Convert times to 12 hour format
 				data.hourly.time[hourly + i].slice(11, 13) >= 13
 					? (time = `${data.hourly.time[hourly + i].slice(11, 13) - 12}pm`)
 					: (time = `${data.hourly.time[hourly + i].slice(11, 13)}am`);
@@ -67,8 +85,27 @@ export default function CurrentForecast({ data, current, weathercode }) {
 					time = '12pm';
 				}
 
+				// Remove '0' from single digit times (01, 02, 03, etc.)
 				if (time.slice(0, 1) === '0') {
 					time = time.slice(1, 4);
+				}
+
+				// If no current maxTemp, set maxTemp to temperature, else set maxTemp to temperature if temperature is greater than maxTemp
+				if (maxTemp) {
+					if (parseInt(temperature[0]) >= maxTemp) {
+						maxTemp = parseInt(temperature[0]);
+					}
+				} else {
+					maxTemp = parseInt(temperature[0]);
+				}
+
+				// Same for minTemp
+				if (minTemp) {
+					if (parseInt(temperature[0]) >= minTemp) {
+						minTemp = parseInt(temperature[0]);
+					}
+				} else {
+					minTemp = parseInt(temperature[0]);
 				}
 
 				switch (data.hourly.weathercode[hourly + i]) {
@@ -192,24 +229,53 @@ export default function CurrentForecast({ data, current, weathercode }) {
 						};
 						break;
 				}
-
 				setHourlyData((hourlyData) => [
 					...hourlyData,
 					{
 						time,
+						temp: parseInt(temperature[0]),
 						weathercode,
-						temp: parseInt(temperature),
 					},
 				]);
 			}
 
+			// Make range larger so chart seems less volatile
+			maxTemp = maxTemp + 3;
+			minTemp = minTemp - 3;
+
+			setDegreeRange((prevState) => [minTemp, maxTemp]);
 			setLoading(false);
 		}
 	}, [data]);
 
+	const CustomTooltip = ({ active, payload, label }) => {
+		if (active && payload && payload.length) {
+			console.log(payload[0]);
+			return (
+				<div className='hour-container' key={uuidv4()}>
+					<h6 className='hour-time'>{label}</h6>
+					<div className='hour-icon'>
+						<img
+							src={payload[0].payload.weathercode.icon}
+							alt='weather-icon'
+							className='weather-icon'
+						/>
+					</div>
+					<h4 className='hour-temperature'>{payload[0].payload.temp}°</h4>
+					<h6 className='hour-forecast'>
+						{payload[0].payload.weathercode.text}
+					</h6>
+				</div>
+			);
+		}
+
+		return null;
+	};
+
 	if (loading) {
 		return <h1>Loading</h1>;
 	}
+
 	if (!current) {
 		return (
 			<section className='dashboard-header container'>
@@ -218,6 +284,7 @@ export default function CurrentForecast({ data, current, weathercode }) {
 		);
 	}
 
+	console.log(hourlyData);
 	return (
 		<section className='current'>
 			<section className='dashboard-header container'>
@@ -270,25 +337,40 @@ export default function CurrentForecast({ data, current, weathercode }) {
 			</section>
 			<section className='hourly'>
 				<header>
-					<h3>Hourly</h3>
-					<h6 className='timezone'>Timezone:</h6>
+					<h3>Hourly Forecast</h3>
 				</header>
 				<div className='hours-container'>
-					{hourlyData.map((hour) => (
-						<div className='hour-container' key={uuidv4()}>
-							<h6 className='hour-time'>{hour.time}</h6>
-							<div className='divider' />
-							<div className='hour-icon'>
-								<img
-									src={hour.weathercode.icon}
-									alt='weather-icon'
-									className='weather-icon'
-								/>
-							</div>
-							<h4 className='hour-temperature'>{hour.temp}°</h4>
-							<h6 className='hour-forecast'>{hour.weathercode.text}</h6>
-						</div>
-					))}
+					<ResponsiveContainer width='100%' height='100%'>
+						<AreaChart
+							width={600}
+							height={200}
+							data={hourlyData}
+							margin={{
+								top: 5,
+								right: 0,
+								left: 0,
+								bottom: 5,
+							}}>
+							<Area
+								type='monotone'
+								dataKey='temp'
+								stroke='#49206b'
+								fill='#49206b'
+							/>
+							<YAxis
+								dataKey='temp'
+								domain={degreeRange}
+								tick={{ fill: '#eeeaea' }}
+								stroke='#bb83e9'
+							/>
+							<XAxis
+								dataKey='time'
+								tick={{ fill: '#eeeaea' }}
+								stroke='#bb83e9'
+							/>
+							<Tooltip content={CustomTooltip} />
+						</AreaChart>
+					</ResponsiveContainer>
 				</div>
 			</section>
 		</section>
