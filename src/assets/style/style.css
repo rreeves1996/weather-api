@@ -183,10 +183,6 @@
   border-radius: 6px;
   margin: 0 !important;
 }
-.dashboard .hourly .chart {
-  width: 100%;
-  height: 600px;
-}
 .dashboard .hourly .recharts-tooltip-wrapper {
   left: 0.5rem;
   justify-content: unset;
@@ -194,6 +190,9 @@
 }
 .dashboard .hourly .recharts-tooltip-wrapper:focus {
   outline: none;
+}
+.dashboard .hourly .hours-container {
+  height: 15rem;
 }
 .dashboard .hourly .hour-container {
   flex-direction: column;

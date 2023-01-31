@@ -37,11 +37,12 @@ export default function Dashboard() {
 				fetchLocation(res).then((res) => {
 					current.time = res.data.current_weather.time;
 
-					setWeatherData({ current: current, data: res.data });
+					setWeatherData((prevState) => ({ current: current, data: res.data }));
 					const newHistory = history.filter((item) => {
 						return item.text !== search;
 					});
 
+					console.log(weatherData);
 					if (history.length > 5) {
 						newHistory.pop();
 						console.log(newHistory);
@@ -69,7 +70,6 @@ export default function Dashboard() {
 	const handleQueryReq = async (query) => {
 		if (query) {
 			await fetchCoordinates(query).then((res) => {
-				console.log(res.data);
 				const current = {
 					city: res.data.results[0].name,
 					state: res.data.results[0].admin1,
@@ -77,10 +77,11 @@ export default function Dashboard() {
 				fetchLocation(res).then((res) => {
 					current.time = res.data.current_weather.time;
 
-					setWeatherData({ current: current, data: res.data });
+					setWeatherData((prevState) => ({ current: current, data: res.data }));
 					const newHistory = history.filter((item) => {
 						return item.text !== query;
 					});
+					console.log(weatherData);
 
 					if (history.length > 5) {
 						newHistory.pop();

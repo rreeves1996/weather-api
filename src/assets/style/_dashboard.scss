@@ -186,10 +186,7 @@
 			border-radius: 6px;
 			margin: 0 !important;
 		}
-		.chart {
-			width: 100%;
-			height: 600px;
-		}
+
 		.recharts-tooltip-wrapper {
 			left: 0.5rem;
 			justify-content: unset;
@@ -198,6 +195,9 @@
 			&:focus {
 				outline: none;
 			}
+		}
+		.hours-container {
+			height: 15rem;
 		}
 		.hour-container {
 			flex-direction: column;

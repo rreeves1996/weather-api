@@ -36,11 +36,11 @@ export default function CurrentForecast({ data, current, weathercode }) {
 			setDegreeRange((prevState) => []);
 			const daily = data.daily.time.indexOf(current.time.slice(0, 10));
 			const hourly = data.hourly.time.indexOf(current.time);
-			let maxTemp;
-			let minTemp;
+			var maxTemp = null;
+			var minTemp = null;
 
-			setDayIndex(daily);
-			setHourlyIndex(hourly);
+			setDayIndex((prevState) => daily);
+			setHourlyIndex((prevState) => hourly);
 
 			// Logic to set wind direction
 			const direction = data.current_weather.winddirection;
@@ -94,18 +94,25 @@ export default function CurrentForecast({ data, current, weathercode }) {
 				if (maxTemp) {
 					if (parseInt(temperature[0]) >= maxTemp) {
 						maxTemp = parseInt(temperature[0]);
+						console.log(`maxTemp: ${maxTemp}`);
+						console.log(parseInt(temperature[0]));
 					}
+					console.log('not bigger');
 				} else {
 					maxTemp = parseInt(temperature[0]);
+					console.log('null');
 				}
 
 				// Same for minTemp
 				if (minTemp) {
-					if (parseInt(temperature[0]) >= minTemp) {
+					if (parseInt(temperature[0]) <= minTemp) {
 						minTemp = parseInt(temperature[0]);
+						console.log(`minTemp: ${minTemp}`);
 					}
+					console.log('not smaller');
 				} else {
 					minTemp = parseInt(temperature[0]);
+					console.log('null');
 				}
 
 				switch (data.hourly.weathercode[hourly + i]) {
@@ -229,6 +236,7 @@ export default function CurrentForecast({ data, current, weathercode }) {
 						};
 						break;
 				}
+
 				setHourlyData((hourlyData) => [
 					...hourlyData,
 					{
@@ -238,19 +246,28 @@ export default function CurrentForecast({ data, current, weathercode }) {
 					},
 				]);
 			}
+			setDegreeRange((prevState) => [minTemp - 3, maxTemp + 3]);
 
-			// Make range larger so chart seems less volatile
-			maxTemp = maxTemp + 3;
-			minTemp = minTemp - 3;
-
-			setDegreeRange((prevState) => [minTemp, maxTemp]);
 			setLoading(false);
+			console.log('ehasd');
+			console.log(degreeRange);
 		}
 	}, [data]);
 
+	if (loading) {
+		return <h1>Loading</h1>;
+	}
+
+	if (!current) {
+		return (
+			<section className='dashboard-header container'>
+				<h1>No data - try searching</h1>
+			</section>
+		);
+	}
+
 	const CustomTooltip = ({ active, payload, label }) => {
 		if (active && payload && payload.length) {
-			console.log(payload[0]);
 			return (
 				<div className='hour-container' key={uuidv4()}>
 					<h6 className='hour-time'>{label}</h6>
@@ -272,19 +289,6 @@ export default function CurrentForecast({ data, current, weathercode }) {
 		return null;
 	};
 
-	if (loading) {
-		return <h1>Loading</h1>;
-	}
-
-	if (!current) {
-		return (
-			<section className='dashboard-header container'>
-				<h1>No data - try searching</h1>
-			</section>
-		);
-	}
-
-	console.log(hourlyData);
 	return (
 		<section className='current'>
 			<section className='dashboard-header container'>
@@ -342,8 +346,8 @@ export default function CurrentForecast({ data, current, weathercode }) {
 				<div className='hours-container'>
 					<ResponsiveContainer width='100%' height='100%'>
 						<AreaChart
-							width={600}
-							height={200}
+							width={500}
+							height={250}
 							data={hourlyData}
 							margin={{
 								top: 5,
@@ -359,7 +363,7 @@ export default function CurrentForecast({ data, current, weathercode }) {
 							/>
 							<YAxis
 								dataKey='temp'
-								domain={degreeRange}
+								domain={degreeRange && degreeRange}
 								tick={{ fill: '#eeeaea' }}
 								stroke='#bb83e9'
 							/>
