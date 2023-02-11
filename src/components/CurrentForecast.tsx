@@ -20,43 +20,44 @@ function importAll(r: any) {
 	return images;
 }
 
-interface CustomTooltipProps {
-	active: any;
-	payload: any;
-	label: string;
-}
+// * CUSTOM TOOLTIP REMOVED CURRENTLY * //
+// interface CustomTooltipProps {
+// 	active: any;
+// 	payload: any;
+// 	label: string;
+// }
 
-function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
-	if (active && payload && payload.length) {
-		return (
-			<div className='hour-container' key={uuidv4()}>
-				<h6 className='hour-time'>{label}</h6>
-				<div className='hour-icon'>
-					<img
-						src={payload[0].payload.weathercode.icon}
-						alt='weather-icon'
-						className='weather-icon'
-					/>
-				</div>
-				<h4 className='hour-temperature'>{payload[0].payload.temp}°</h4>
-				<h6 className='hour-forecast'>{payload[0].payload.weathercode.text}</h6>
-			</div>
-		);
-	}
+// function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
+// 	if (active && payload && payload.length) {
+// 		return (
+// 			<div className='hour-container' key={uuidv4()}>
+// 				<h6 className='hour-time'>{label}</h6>
+// 				<div className='hour-icon'>
+// 					<img
+// 						src={payload[0].payload.weathercode.icon}
+// 						alt='weather-icon'
+// 						className='weather-icon'
+// 					/>
+// 				</div>
+// 				<h4 className='hour-temperature'>{payload[0].payload.temp}°</h4>
+// 				<h6 className='hour-forecast'>{payload[0].payload.weathercode.text}</h6>
+// 			</div>
+// 		);
+// 	}
 
-	return null;
-}
+// 	return null;
+// }
 
 interface CurrentForecastProps extends WeatherData {}
 
-interface HourlyData {
+type HourlyData = {
 	time: string;
 	temp: number;
 	weathercode: {
 		text: string;
 		icon: string;
 	};
-}
+};
 
 export default function CurrentForecast({
 	data,
