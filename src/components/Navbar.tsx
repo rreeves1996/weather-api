@@ -21,9 +21,9 @@ export default function Navbar() {
 				<a href='https://github.com/rreeves1996/weather-api'>
 					<h6 className='nav-link'>Repo</h6>
 				</a>
-				<Link to='/contact'>
+				<a href='https://rreeves.dev/'>
 					<h6 className='nav-link'>Contact</h6>
-				</Link>
+				</a>
 			</div>
 		</nav>
 	);
