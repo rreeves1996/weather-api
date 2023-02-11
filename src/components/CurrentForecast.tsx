@@ -49,14 +49,23 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
 
 interface CurrentForecastProps extends WeatherData {}
 
+interface HourlyData {
+	time: string;
+	temp: number;
+	weathercode: {
+		text: string;
+		icon: string;
+	};
+}
+
 export default function CurrentForecast({
 	data,
 	current,
 	weathercode,
 }: CurrentForecastProps) {
 	const [loading, setLoading] = useState(true);
-	const [hourlyData, setHourlyData] = useState<object[]>([]);
-	const [degreeRange, setDegreeRange] = useState<number[]>();
+	const [hourlyData, setHourlyData] = useState<HourlyData[]>([]);
+	const [degreeRange, setDegreeRange] = useState<number[]>([]);
 	const [windDirection, setWindDirection] = useState<string>();
 	const [hourlyIndex, setHourlyIndex] = useState<number>();
 	const [dayIndex, setDayIndex] = useState<number>();
@@ -67,8 +76,8 @@ export default function CurrentForecast({
 			setDegreeRange((prevState) => []);
 			const daily = data.daily.time.indexOf(current.time.slice(0, 10));
 			const hourly = data.hourly.time.indexOf(current.time);
-			var maxTemp: number | null = null;
-			var minTemp: number | null = null;
+			var maxTemp: number;
+			var minTemp: number;
 
 			setDayIndex(() => daily);
 			setHourlyIndex(() => hourly);
@@ -97,7 +106,7 @@ export default function CurrentForecast({
 			}
 
 			for (let i = 1; i < 13; i++) {
-				let time: string | null;
+				let time: string;
 				let weathercode = {
 					text: '',
 					icon: '',
@@ -130,7 +139,7 @@ export default function CurrentForecast({
 				}
 
 				// If no current maxTemp, set maxTemp to temperature, else set maxTemp to temperature if temperature is greater than maxTemp
-				if (maxTemp) {
+				if (maxTemp!) {
 					if (parseInt(temperature[0]) >= maxTemp) {
 						maxTemp = parseInt(temperature[0]);
 						console.log(`maxTemp: ${maxTemp}`);
@@ -143,7 +152,7 @@ export default function CurrentForecast({
 				}
 
 				// Same for minTemp
-				if (minTemp) {
+				if (minTemp!) {
 					if (parseInt(temperature[0]) <= minTemp) {
 						minTemp = parseInt(temperature[0]);
 						console.log(`minTemp: ${minTemp}`);
