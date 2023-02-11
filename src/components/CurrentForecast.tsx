@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
 	ResponsiveContainer,
 	AreaChart,
-	linearGradient,
-	Line,
 	Area,
 	XAxis,
 	YAxis,
@@ -14,21 +12,54 @@ import { v4 as uuidv4 } from 'uuid';
 
 const images = importAll(require.context('../assets/icons', false, /\.(png)$/));
 
-function importAll(r) {
-	let images = {};
-	r.keys().map((item, index) => {
+function importAll(r: any) {
+	let images: any = {};
+	r.keys().map((item: any, index: number) => {
 		images[item.replace('./', '')] = r(item);
 	});
 	return images;
 }
 
-export default function CurrentForecast({ data, current, weathercode }) {
+interface CustomTooltipProps {
+	active: any;
+	payload: any;
+	label: string;
+}
+
+function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
+	if (active && payload && payload.length) {
+		return (
+			<div className='hour-container' key={uuidv4()}>
+				<h6 className='hour-time'>{label}</h6>
+				<div className='hour-icon'>
+					<img
+						src={payload[0].payload.weathercode.icon}
+						alt='weather-icon'
+						className='weather-icon'
+					/>
+				</div>
+				<h4 className='hour-temperature'>{payload[0].payload.temp}°</h4>
+				<h6 className='hour-forecast'>{payload[0].payload.weathercode.text}</h6>
+			</div>
+		);
+	}
+
+	return null;
+}
+
+interface CurrentForecastProps extends WeatherData {}
+
+export default function CurrentForecast({
+	data,
+	current,
+	weathercode,
+}: CurrentForecastProps) {
 	const [loading, setLoading] = useState(true);
-	const [hourlyData, setHourlyData] = useState([]);
-	const [degreeRange, setDegreeRange] = useState([]);
-	const [windDirection, setWindDirection] = useState();
-	const [hourlyIndex, setHourlyIndex] = useState();
-	const [dayIndex, setDayIndex] = useState();
+	const [hourlyData, setHourlyData] = useState<object[]>([]);
+	const [degreeRange, setDegreeRange] = useState<number[]>();
+	const [windDirection, setWindDirection] = useState<string>();
+	const [hourlyIndex, setHourlyIndex] = useState<number>();
+	const [dayIndex, setDayIndex] = useState<number>();
 
 	useEffect(() => {
 		if (data) {
@@ -36,11 +67,11 @@ export default function CurrentForecast({ data, current, weathercode }) {
 			setDegreeRange((prevState) => []);
 			const daily = data.daily.time.indexOf(current.time.slice(0, 10));
 			const hourly = data.hourly.time.indexOf(current.time);
-			var maxTemp = null;
-			var minTemp = null;
+			var maxTemp: number | null = null;
+			var minTemp: number | null = null;
 
-			setDayIndex((prevState) => daily);
-			setHourlyIndex((prevState) => hourly);
+			setDayIndex(() => daily);
+			setHourlyIndex(() => hourly);
 
 			// Logic to set wind direction
 			const direction = data.current_weather.winddirection;
@@ -66,8 +97,11 @@ export default function CurrentForecast({ data, current, weathercode }) {
 			}
 
 			for (let i = 1; i < 13; i++) {
-				let time;
-				let weathercode;
+				let time: string | null;
+				let weathercode = {
+					text: '',
+					icon: '',
+				};
 
 				// 'Round' temperature to closest whole number
 				let temperature = JSON.stringify(
@@ -75,10 +109,15 @@ export default function CurrentForecast({ data, current, weathercode }) {
 				).split('.');
 
 				// Convert times to 12 hour format
-				data.hourly.time[hourly + i].slice(11, 13) >= 13
-					? (time = `${data.hourly.time[hourly + i].slice(11, 13) - 12}pm`)
-					: (time = `${data.hourly.time[hourly + i].slice(11, 13)}am`);
+				parseInt(data.hourly.time[hourly + i].slice(11, 13)) >= 13
+					? (time = `${
+							parseInt(data.hourly.time[hourly + i].slice(11, 13)) - 12
+					  }pm`)
+					: (time = `${parseInt(
+							data.hourly.time[hourly + i].slice(11, 13)
+					  )}am`);
 
+				// Account for midnight and noon
 				if (time === '00am') {
 					time = '12am';
 				} else if (time === '00pm') {
@@ -246,11 +285,9 @@ export default function CurrentForecast({ data, current, weathercode }) {
 					},
 				]);
 			}
-			setDegreeRange((prevState) => [minTemp - 3, maxTemp + 3]);
+			setDegreeRange(() => [minTemp! - 3, maxTemp! + 3]);
 
 			setLoading(false);
-			console.log('ehasd');
-			console.log(degreeRange);
 		}
 	}, [data]);
 
@@ -266,29 +303,6 @@ export default function CurrentForecast({ data, current, weathercode }) {
 		);
 	}
 
-	const CustomTooltip = ({ active, payload, label }) => {
-		if (active && payload && payload.length) {
-			return (
-				<div className='hour-container' key={uuidv4()}>
-					<h6 className='hour-time'>{label}</h6>
-					<div className='hour-icon'>
-						<img
-							src={payload[0].payload.weathercode.icon}
-							alt='weather-icon'
-							className='weather-icon'
-						/>
-					</div>
-					<h4 className='hour-temperature'>{payload[0].payload.temp}°</h4>
-					<h6 className='hour-forecast'>
-						{payload[0].payload.weathercode.text}
-					</h6>
-				</div>
-			);
-		}
-
-		return null;
-	};
-
 	return (
 		<section className='current'>
 			<section className='dashboard-header container'>
@@ -301,16 +315,16 @@ export default function CurrentForecast({ data, current, weathercode }) {
 				<div className='sub-header'>
 					<h6>
 						<img
-							src={weathercode.icon}
+							src={weathercode!.icon}
 							alt='weather-icon'
 							className='weather-icon'
 						/>{' '}
-						{weathercode.text}
+						{weathercode!.text}
 					</h6>
 					<p>
 						It is currently <strong>{data.current_weather.temperature}°</strong>{' '}
 						(F) with{' '}
-						<strong>{data.hourly.relativehumidity_2m[hourlyIndex]}%</strong>{' '}
+						<strong>{data.hourly.relativehumidity_2m[hourlyIndex!]}%</strong>{' '}
 						humidity.
 					</p>
 					<div className='extra-stats'>
@@ -318,13 +332,13 @@ export default function CurrentForecast({ data, current, weathercode }) {
 							<MdChevronRight />
 							Feels like:{' '}
 							<strong>
-								{data.hourly.apparent_temperature[hourlyIndex]}°
+								{data.hourly.apparent_temperature[hourlyIndex!]}°
 							</strong>{' '}
 							(F)
 						</span>
 						<span>
 							<MdChevronRight />
-							Wind: <strong>{data.hourly.windspeed_80m[hourlyIndex]}</strong>
+							Wind: <strong>{data.hourly.windspeed_80m[hourlyIndex!]}</strong>
 							/mph
 						</span>
 						<span>
@@ -334,7 +348,7 @@ export default function CurrentForecast({ data, current, weathercode }) {
 						<span>
 							<MdChevronRight />
 							Precipitation total:{' '}
-							<strong>{data.daily.precipitation_sum[dayIndex]}</strong> in.
+							<strong>{data.daily.precipitation_sum[dayIndex!]}</strong> in.
 						</span>
 					</div>
 				</div>
@@ -372,7 +386,7 @@ export default function CurrentForecast({ data, current, weathercode }) {
 								tick={{ fill: '#eeeaea' }}
 								stroke='#bb83e9'
 							/>
-							<Tooltip content={CustomTooltip} />
+							{/* <Tooltip content={CustomTooltip} /> */}
 						</AreaChart>
 					</ResponsiveContainer>
 				</div>

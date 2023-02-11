@@ -2,10 +2,20 @@ import React, { useState } from 'react';
 import { BsFillCloudMoonFill } from 'react-icons/bs';
 import { v4 as uuidv4 } from 'uuid';
 
-export default function Search({ handleSearch, handleQueryReq, history }) {
+interface SearchProps {
+	handleSearch: (arg?: any) => void;
+	handleQueryReq: (arg?: any) => void;
+	history: object[];
+}
+
+export default function Search({
+	handleSearch,
+	handleQueryReq,
+	history,
+}: SearchProps) {
 	const [formState, setFormState] = useState({ search: '' });
 
-	const handleChange = (event) => {
+	const handleChange = (event: any) => {
 		const { name, value } = event.target;
 
 		setFormState({
@@ -14,7 +24,7 @@ export default function Search({ handleSearch, handleQueryReq, history }) {
 		});
 	};
 
-	const handleSearchSubmit = async (event) => {
+	const handleSearchSubmit = async (event: any) => {
 		event.preventDefault();
 
 		const search = formState.search.trim();
@@ -44,7 +54,7 @@ export default function Search({ handleSearch, handleQueryReq, history }) {
 				<section className='history'>
 					<h5>History:</h5>
 					<div className='history-item-container'>
-						{history.map((item) => (
+						{history.map((item: any) => (
 							<p
 								className='history-item'
 								onClick={() => handleQueryReq(item.text)}

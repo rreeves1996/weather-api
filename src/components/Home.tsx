@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent } from 'react';
 import { BsFillCloudMoonFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import useFetch from '../hooks/useFetch';
@@ -8,25 +8,26 @@ export default function Home() {
 	const [searchState, setSearchState] = useState('');
 	const navigate = useNavigate();
 
-	const handleChange = (event) => {
+	const handleChange = (event: any) => {
 		const value = event.target.value;
 
 		setSearchState(value);
 	};
 
-	const handleSearchSubmit = async (event) => {
+	const handleSearchSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		const search = searchState.trim();
 
 		if (search) {
-			await fetchCoordinates(search).then((res) => {
+			await fetchCoordinates(search).then((res: any) => {
 				console.log(res.data);
 				const current = {
 					city: res.data.results[0].name,
 					state: res.data.results[0].admin1,
+					time: '',
 				};
-				fetchLocation(res).then((res) => {
+				fetchLocation(res).then((res: any) => {
 					current.time = res.data.current_weather.time;
 
 					navigate('/dashboard', {

@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 
 export default function useFetch() {
-	const fetchCoordinates = async (params) => {
+	const fetchCoordinates = async (params: string) => {
 		try {
 			const res = await axios.get(
 				// Geolocater gets the requested city's latitude and longitude
@@ -15,7 +15,7 @@ export default function useFetch() {
 		}
 	};
 
-	const fetchLocation = async (params) => {
+	const fetchLocation = async (params: any) => {
 		try {
 			const lat = params.data.results[0].latitude;
 			const lon = params.data.results[0].longitude;

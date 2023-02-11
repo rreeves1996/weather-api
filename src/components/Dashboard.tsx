@@ -7,9 +7,9 @@ import Search from './Search';
 import useFetch from '../hooks/useFetch';
 const images = importAll(require.context('../assets/icons', false, /\.(png)$/));
 
-function importAll(r) {
-	let images = {};
-	r.keys().map((item, index) => {
+function importAll(r: any) {
+	let images: any = {};
+	r.keys().map((item: any, index: number) => {
 		images[item.replace('./', '')] = r(item);
 	});
 	return images;
@@ -18,35 +18,40 @@ function importAll(r) {
 export default function Dashboard() {
 	const { fetchCoordinates, fetchLocation } = useFetch();
 	const [loading, setLoading] = useState(true);
-	const [weatherData, setWeatherData] = useState();
+	const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
 	const [weatherCode, setWeatherCode] = useState({});
 	const [history, setHistory] = useState(() => {
-		return JSON.parse(localStorage.getItem('search-history')) || [];
+		return JSON.parse(localStorage.getItem('search-history')!) || [];
 	});
 
 	const location = useLocation();
 
-	const handleSearch = async (search) => {
+	const handleSearch = async (search: string) => {
 		if (search) {
-			await fetchCoordinates(search).then((res) => {
+			await fetchCoordinates(search).then((res: any) => {
+				const { data } = res;
+
 				const current = {
-					city: res.data.results[0].name,
-					state: res.data.results[0].admin1,
+					city: data.results[0].name,
+					state: data.results[0].admin1,
+					time: '',
 				};
 
-				fetchLocation(res).then((res) => {
-					current.time = res.data.current_weather.time;
+				fetchLocation(res).then((res: any) => {
+					const { data } = res;
+
+					current.time = data.current_weather.time;
 
 					setWeatherData((prevState) => ({ current: current, data: res.data }));
-					const newHistory = history.filter((item) => {
+
+					const newHistory = history.filter((item: any) => {
 						return item.text !== search;
 					});
 
-					console.log(weatherData);
 					if (history.length > 5) {
 						newHistory.pop();
 						console.log(newHistory);
-						setHistory((history) => [
+						setHistory(() => [
 							{
 								id: uuidv4(),
 								text: search,
@@ -54,7 +59,7 @@ export default function Dashboard() {
 							...newHistory,
 						]);
 					} else {
-						setHistory((history) => [
+						setHistory(() => [
 							{
 								id: uuidv4(),
 								text: search,
@@ -67,26 +72,31 @@ export default function Dashboard() {
 		}
 	};
 
-	const handleQueryReq = async (query) => {
+	const handleQueryReq = async (query: string) => {
 		if (query) {
-			await fetchCoordinates(query).then((res) => {
-				const current = {
-					city: res.data.results[0].name,
-					state: res.data.results[0].admin1,
-				};
-				fetchLocation(res).then((res) => {
-					current.time = res.data.current_weather.time;
+			await fetchCoordinates(query).then((res: any) => {
+				const { data } = res;
 
-					setWeatherData((prevState) => ({ current: current, data: res.data }));
-					const newHistory = history.filter((item) => {
+				const current = {
+					city: data.results[0].name,
+					state: data.results[0].admin1,
+					time: '',
+				};
+				fetchLocation(res).then((res: any) => {
+					const { data } = res;
+
+					current.time = data.current_weather.time;
+
+					setWeatherData(() => ({ current: current, data: res.data }));
+
+					const newHistory = history.filter((item: any) => {
 						return item.text !== query;
 					});
-					console.log(weatherData);
 
 					if (history.length > 5) {
 						newHistory.pop();
 						console.log(newHistory);
-						setHistory((history) => [
+						setHistory(() => [
 							{
 								id: uuidv4(),
 								text: query,
@@ -94,7 +104,7 @@ export default function Dashboard() {
 							...newHistory,
 						]);
 					} else {
-						setHistory((history) => [
+						setHistory(() => [
 							{
 								id: uuidv4(),
 								text: query,
@@ -116,7 +126,7 @@ export default function Dashboard() {
 				setWeatherData(location.state);
 				console.log(location.state);
 
-				const newHistory = history.filter((item) => {
+				const newHistory = history.filter((item: any) => {
 					return item.text !== location.state.current.city;
 				});
 				console.log(weatherData);
@@ -124,7 +134,7 @@ export default function Dashboard() {
 				if (history.length > 5) {
 					newHistory.pop();
 					console.log(newHistory);
-					setHistory((history) => [
+					setHistory(() => [
 						{
 							id: uuidv4(),
 							text: location.state.current.city,
@@ -132,7 +142,7 @@ export default function Dashboard() {
 						...newHistory,
 					]);
 				} else {
-					setHistory((history) => [
+					setHistory(() => [
 						{
 							id: uuidv4(),
 							text: location.state.current.city,
@@ -140,6 +150,7 @@ export default function Dashboard() {
 						...newHistory,
 					]);
 				}
+
 				// Logic to set weather text/weather icon based on weathercode and sunrise/sunset times
 				const currentTime = location.state.data.current_weather.time.slice(
 					11,
@@ -154,6 +165,7 @@ export default function Dashboard() {
 				);
 				const sunset = location.state.data.daily.sunset[dayIndex].slice(11, 13);
 
+				// Based on weathercode, set proper weather icon and text
 				switch (location.state.data.current_weather.weathercode) {
 					case 0:
 						if (currentTime < sunrise || currentTime > sunset) {
@@ -304,11 +316,11 @@ export default function Dashboard() {
 				) : (
 					<>
 						<CurrentForecast
-							data={weatherData.data}
-							current={weatherData.current}
+							data={weatherData!.data}
+							current={weatherData!.current}
 							weathercode={weatherCode}
 						/>
-						<DailyForecast forecast={weatherData.data} />
+						<DailyForecast data={weatherData!.data} />
 					</>
 				)}
 			</section>

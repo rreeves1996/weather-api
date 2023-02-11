@@ -4,9 +4,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { SlCalender } from 'react-icons/sl';
 import ForecastDay from './cards/ForecastDay';
 
-export default function DailyForecast({ forecast }) {
-	const [loading, setLoading] = useState(true);
-	const [days, setDays] = useState([]);
+interface DailyForecastProps extends ResponseData {}
+
+export default function DailyForecast({ data }: DailyForecastProps) {
+	const [loading, setLoading] = useState<boolean>(true);
+	const [days, setDays] = useState<object[]>([]);
 
 	useEffect(() => {
 		setDays((prevState) => []);
@@ -16,17 +18,17 @@ export default function DailyForecast({ forecast }) {
 			setDays((days) => [
 				...days,
 				{
-					high: forecast.daily.temperature_2m_max[i],
-					low: forecast.daily.temperature_2m_min[i],
+					high: data.daily.temperature_2m_max[i],
+					low: data.daily.temperature_2m_min[i],
 					date: dayjs().day(i).format('MMM D YYYY'),
 					day: dayjs().day(i).format('dddd'),
-					weather: forecast.daily.weathercode[i],
+					weather: data.daily.weathercode[i],
 				},
 			]);
 		}
 
 		setLoading(false);
-	}, [forecast]);
+	}, [data]);
 
 	return (
 		<section className='daily container'>
@@ -38,7 +40,7 @@ export default function DailyForecast({ forecast }) {
 					<></>
 				) : (
 					<>
-						{days.map((day) => (
+						{days.map((day: any) => (
 							<ForecastDay
 								key={uuidv4()}
 								high={day.high}

@@ -8,17 +8,30 @@ const images = importAll(
 	require.context('../../assets/icons', false, /\.(png)$/)
 );
 
-function importAll(r) {
-	let images = {};
-	r.keys().map((item, index) => {
+function importAll(r: any) {
+	let images: any = {};
+	r.keys().map((item: any, index: number) => {
 		images[item.replace('./', '')] = r(item);
 	});
 	return images;
 }
 
-export default function ForecastDay({ high, low, date, day, weathercode }) {
+interface ForecastDayProps extends Day {}
+
+interface weatherCodeData {
+	icon?: string;
+	text?: string;
+}
+
+export default function ForecastDay({
+	high,
+	low,
+	date,
+	day,
+	weathercode,
+}: ForecastDayProps) {
 	const [loading, setLoading] = useState(true);
-	const [weatherCodeData, setWeatherCodeData] = useState({});
+	const [weatherCodeData, setWeatherCodeData] = useState<weatherCodeData>();
 	const dateSplit = date.split(' ');
 	const formattedDate = `${dateSplit[0]}. ${dateSplit[1]}, ${dateSplit[2]}`;
 	const formattedHigh = JSON.stringify(high).split('.');
@@ -123,7 +136,7 @@ export default function ForecastDay({ high, low, date, day, weathercode }) {
 		getWeatherCodeData();
 	}, []);
 
-	const renderIcon = (text) => {
+	const renderIcon = (text?: string) => {
 		if (text === 'Clear') {
 			return <RiSunFill className='forecast-mini-icon' />;
 		} else if (text === 'Cloudy') {
@@ -152,13 +165,13 @@ export default function ForecastDay({ high, low, date, day, weathercode }) {
 						</div>
 						<div className='forecast-body-right'>
 							<img
-								src={weatherCodeData.icon}
+								src={weatherCodeData!.icon}
 								alt='forecast-icon'
 								className='forecast-icon'
 							/>
 							<h6 className='forecast'>
-								<span>{renderIcon(weatherCodeData.text)}</span>
-								{weatherCodeData.text}
+								<span>{renderIcon(weatherCodeData!.text)}</span>
+								{weatherCodeData!.text}
 							</h6>
 							<section className='high-low'>
 								<div className='high'>
