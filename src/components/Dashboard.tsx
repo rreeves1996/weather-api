@@ -17,9 +17,12 @@ function importAll(r: any) {
 
 export default function Dashboard() {
 	const { fetchCoordinates, fetchLocation } = useFetch();
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState<boolean>(true);
 	const [weatherData, setWeatherData] = useState<WeatherData>();
-	const [weatherCode, setWeatherCode] = useState({});
+	const [weatherCode, setWeatherCode] = useState<{
+		text: string;
+		icon: object;
+	}>();
 	const [history, setHistory] = useState(() => {
 		return JSON.parse(localStorage.getItem('search-history')!) || [];
 	});
@@ -42,15 +45,15 @@ export default function Dashboard() {
 
 					current.time = data.current_weather.time;
 
-					setWeatherData((prevState) => ({ current: current, data: res.data }));
+					setWeatherData((prevState) => ({ current: current, data }));
 
-					const newHistory = history.filter((item: any) => {
+					const newHistory: string[] = history.filter((item: any) => {
 						return item.text !== search;
 					});
 
 					if (history.length > 5) {
 						newHistory.pop();
-						console.log(newHistory);
+
 						setHistory(() => [
 							{
 								id: uuidv4(),

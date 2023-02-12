@@ -70,6 +70,7 @@ export default function CurrentForecast({
 	const [windDirection, setWindDirection] = useState<string>();
 	const [hourlyIndex, setHourlyIndex] = useState<number>();
 	const [dayIndex, setDayIndex] = useState<number>();
+	const { hourly, daily, current_weather } = data;
 
 	useEffect(() => {
 		if (data) {
@@ -332,23 +333,19 @@ export default function CurrentForecast({
 						{weathercode!.text}
 					</h6>
 					<p>
-						It is currently <strong>{data.current_weather.temperature}°</strong>{' '}
-						(F) with{' '}
-						<strong>{data.hourly.relativehumidity_2m[hourlyIndex!]}%</strong>{' '}
+						It is currently <strong>{current_weather.temperature}°</strong> (F)
+						with <strong>{hourly.relativehumidity_2m[hourlyIndex!]}%</strong>{' '}
 						humidity.
 					</p>
 					<div className='extra-stats'>
 						<span>
 							<MdChevronRight />
 							Feels like:{' '}
-							<strong>
-								{data.hourly.apparent_temperature[hourlyIndex!]}°
-							</strong>{' '}
-							(F)
+							<strong>{hourly.apparent_temperature[hourlyIndex!]}°</strong> (F)
 						</span>
 						<span>
 							<MdChevronRight />
-							Wind: <strong>{data.hourly.windspeed_80m[hourlyIndex!]}</strong>
+							Wind: <strong>{hourly.windspeed_80m[hourlyIndex!]}</strong>
 							/mph
 						</span>
 						<span>
@@ -358,7 +355,7 @@ export default function CurrentForecast({
 						<span>
 							<MdChevronRight />
 							Precipitation total:{' '}
-							<strong>{data.daily.precipitation_sum[dayIndex!]}</strong> in.
+							<strong>{daily.precipitation_sum[dayIndex!]}</strong> in.
 						</span>
 					</div>
 				</div>

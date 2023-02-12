@@ -137,23 +137,34 @@ export default function ForecastDay({
 	}, []);
 
 	const renderIcon = (text?: string) => {
-		if (text === 'Clear') {
-			return <RiSunFill className='forecast-mini-icon' />;
-		} else if (text === 'Cloudy') {
-			return <BsCloudFill className='forecast-mini-icon' />;
-		} else if (text === 'Fog') {
-			return <BsCloudFogFill className='forecast-mini-icon' />;
-		} else if (text === 'Thunder') {
-			return <AiFillThunderbolt className='forecast-mini-icon' />;
-		} else if (text === 'Snow') {
-			return <BsSnow className='forecast-mini-icon' />;
-		} else if (text === 'Rain' || text === 'Drizzle') {
-			return <GiWaterDrop className='forecast-mini-icon' />;
+		switch (text) {
+			case 'Clear': {
+				return <RiSunFill className='forecast-mini-icon' />;
+			}
+			case 'Cloudy': {
+				return <BsCloudFill className='forecast-mini-icon' />;
+			}
+			case 'Fog': {
+				return <BsCloudFogFill className='forecast-mini-icon' />;
+			}
+			case 'Thunder': {
+				return <AiFillThunderbolt className='forecast-mini-icon' />;
+			}
+			case 'Snow': {
+				return <BsSnow className='forecast-mini-icon' />;
+			}
+			case 'Rain':
+			case 'Drizzle': {
+				return <GiWaterDrop className='forecast-mini-icon' />;
+			}
+			default: {
+				return <RiSunFill className='forecast-mini-icon' />;
+			}
 		}
 	};
 
 	if (loading) {
-		return <></>;
+		return <h1>Loading...</h1>;
 	} else {
 		return (
 			<>

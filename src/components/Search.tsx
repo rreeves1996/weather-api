@@ -5,7 +5,10 @@ import { v4 as uuidv4 } from 'uuid';
 interface SearchProps {
 	handleSearch: (arg?: any) => void;
 	handleQueryReq: (arg?: any) => void;
-	history: object[];
+	history: {
+		id: number;
+		text: string;
+	}[];
 }
 
 export default function Search({
@@ -54,7 +57,7 @@ export default function Search({
 				<section className='history'>
 					<h5>History:</h5>
 					<div className='history-item-container'>
-						{history.map((item: any) => (
+						{history.map((item) => (
 							<p
 								className='history-item'
 								onClick={() => handleQueryReq(item.text)}
