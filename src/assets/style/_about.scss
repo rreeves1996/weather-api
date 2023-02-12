@@ -1,0 +1,48 @@
+.about-container {
+	display: flex;
+	text-align: center;
+	justify-content: center;
+	padding: 1.5rem 1rem;
+	.badge-container {
+		margin: 1rem 0;
+		.badge {
+			padding: 0.3rem 0 !important;
+			filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.274));
+			width: 5rem;
+			margin: 0 1rem;
+			code {
+				font-size: 0.75rem;
+				color: $offWhite;
+			}
+		}
+		.react-badge {
+			background-color: rgb(38, 181, 238);
+		}
+		.typescript-badge {
+			background-color: rgb(35, 103, 228);
+		}
+		.sass-badge {
+			background-color: rgb(238, 38, 211);
+		}
+		.node-badge {
+			background-color: rgb(36, 173, 59);
+		}
+	}
+	.divider {
+		width: 90%;
+		height: 2px;
+		background-color: rgba(0, 0, 0, 0.479);
+		margin: 0 auto 0.8rem;
+	}
+	.about-body {
+		display: flex;
+		flex-direction: column;
+		width: 90%;
+		margin: auto;
+
+		p {
+			margin: 0;
+			text-indent: 0.5rem;
+		}
+	}
+}

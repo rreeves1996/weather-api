@@ -75,7 +75,6 @@
 }
 .dashboard .current {
   display: flex;
-  height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
   margin-bottom: 1.6rem;
@@ -102,15 +101,12 @@
   margin: 0 !important;
   justify-content: space-between;
   flex-direction: column;
-  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
-  min-height: -webkit-fit-content !important;
   min-height: -moz-fit-content !important;
   min-height: fit-content !important;
 }
 .dashboard .dashboard-header header {
-  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
   padding-bottom: 1rem;
@@ -119,7 +115,6 @@
   display: flex;
   flex-direction: column;
   min-width: 100%;
-  width: -webkit-min-content;
   width: -moz-min-content;
   width: min-content;
   border-top: 2px solid #1f1327;
@@ -163,7 +158,6 @@
   padding: 2rem 2.5rem;
 }
 .dashboard .daily.container {
-  width: -webkit-fit-content !important;
   width: -moz-fit-content !important;
   width: fit-content !important;
   max-width: 100%;
@@ -313,8 +307,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  -ms-writing-mode: tb-rl;
-      writing-mode: vertical-rl;
+  writing-mode: vertical-rl;
   text-orientation: sideways-right;
   transform: rotate(180deg);
   font-family: "Alumni Sans Pinstripe";
@@ -386,7 +379,6 @@
 }
 .forecast-card .forecast-card-body .forecast-body-right .high {
   display: flex;
-  height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
 }
@@ -418,6 +410,54 @@
   letter-spacing: 0.2rem;
   font-size: 0.9rem;
   margin-right: 0.15rem;
+}
+
+.about-container {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  padding: 1.5rem 1rem;
+}
+.about-container .badge-container {
+  margin: 1rem 0;
+}
+.about-container .badge-container .badge {
+  padding: 0.3rem 0 !important;
+  filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.274));
+  width: 5rem;
+  margin: 0 1rem;
+}
+.about-container .badge-container .badge code {
+  font-size: 0.75rem;
+  color: #eeeaea;
+}
+.about-container .badge-container .react-badge {
+  background-color: rgb(38, 181, 238);
+}
+.about-container .badge-container .typescript-badge {
+  background-color: rgb(35, 103, 228);
+}
+.about-container .badge-container .sass-badge {
+  background-color: rgb(238, 38, 211);
+}
+.about-container .badge-container .node-badge {
+  background-color: rgb(36, 173, 59);
+}
+.about-container .divider {
+  width: 90%;
+  height: 2px;
+  background-color: rgba(0, 0, 0, 0.479);
+  margin: 0 auto 0.8rem;
+}
+.about-container .about-body {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: auto;
+}
+.about-container .about-body p {
+  margin: 0;
+  text-indent: 0.5rem;
 }
 
 body {
@@ -513,7 +553,6 @@ main div {
   margin: 0.8rem;
   border-radius: 6px;
   filter: drop-shadow(1px 3px 3px rgba(0, 0, 0, 0.404));
-  height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
 }
@@ -521,10 +560,8 @@ main div {
 .brand {
   display: flex;
   background-color: #49206b;
-  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
-  height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
   padding: 0.7rem;
