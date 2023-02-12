@@ -18,7 +18,7 @@ function importAll(r: any) {
 export default function Dashboard() {
 	const { fetchCoordinates, fetchLocation } = useFetch();
 	const [loading, setLoading] = useState(true);
-	const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+	const [weatherData, setWeatherData] = useState<WeatherData>();
 	const [weatherCode, setWeatherCode] = useState({});
 	const [history, setHistory] = useState(() => {
 		return JSON.parse(localStorage.getItem('search-history')!) || [];

@@ -8,7 +8,7 @@ interface DailyForecastProps extends ResponseData {}
 
 export default function DailyForecast({ data }: DailyForecastProps) {
 	const [loading, setLoading] = useState<boolean>(true);
-	const [days, setDays] = useState<object[]>([]);
+	const [days, setDays] = useState<Day[]>([]);
 
 	useEffect(() => {
 		setDays((prevState) => []);
@@ -22,7 +22,7 @@ export default function DailyForecast({ data }: DailyForecastProps) {
 					low: data.daily.temperature_2m_min[i],
 					date: dayjs().day(i).format('MMM D YYYY'),
 					day: dayjs().day(i).format('dddd'),
-					weather: data.daily.weathercode[i],
+					weathercode: data.daily.weathercode[i],
 				},
 			]);
 		}
@@ -47,7 +47,7 @@ export default function DailyForecast({ data }: DailyForecastProps) {
 								low={day.low}
 								date={day.date}
 								day={day.day}
-								weathercode={day.weather}
+								weathercode={day.weathercode}
 							/>
 						))}
 					</>
