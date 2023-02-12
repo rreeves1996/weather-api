@@ -40,7 +40,7 @@ export default function DailyForecast({ data }: DailyForecastProps) {
 					<></>
 				) : (
 					<>
-						{days.map((day: any) => (
+						{days.map((day: Day) => (
 							<ForecastDay
 								key={uuidv4()}
 								high={day.high}
