@@ -16,12 +16,12 @@ function importAll(r: any) {
 	return images;
 }
 
-interface ForecastDayProps extends Day {}
+type ForecastDayProps = Day & {};
 
-interface weatherCodeData {
+type weatherCodeData = {
 	icon?: string;
 	text?: string;
-}
+};
 
 export default function ForecastDay({
 	high,
@@ -163,9 +163,8 @@ export default function ForecastDay({
 		}
 	};
 
-	if (loading) {
-		return <h1>Loading...</h1>;
-	} else {
+	if (loading) return <h1>Loading...</h1>;
+	else {
 		return (
 			<>
 				<div className='forecast-card'>
