@@ -8,8 +8,6 @@ import {
 	Tooltip,
 } from 'recharts';
 import { MdChevronRight } from 'react-icons/md';
-import { v4 as uuidv4 } from 'uuid';
-
 const images = importAll(require.context('../assets/icons', false, /\.(png)$/));
 
 function importAll(r: any) {
@@ -48,7 +46,7 @@ function importAll(r: any) {
 // 	return null;
 // }
 
-interface CurrentForecastProps extends WeatherData {}
+type CurrentForecastProps = WeatherData & {};
 
 type HourlyData = {
 	time: string;

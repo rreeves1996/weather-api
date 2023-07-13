@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { SlCalender } from 'react-icons/sl';
 import ForecastDay from './cards/ForecastDay';
 
-interface DailyForecastProps extends ResponseData {}
+type DailyForecastProps = ResponseData & {};
 
 export default function DailyForecast({ data }: DailyForecastProps) {
 	const [loading, setLoading] = useState<boolean>(true);
