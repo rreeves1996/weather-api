@@ -16,7 +16,7 @@ function importAll(r: any) {
 	return images;
 }
 
-type ForecastDayProps = Day & {};
+type ForecastDayProps = Day;
 
 type weatherCodeData = {
 	icon?: string;
@@ -138,9 +138,9 @@ export default function ForecastDay({
 
 	const renderIcon = (text?: string) => {
 		switch (text) {
-			case 'Clear': {
+			case 'Clear':
 				return <RiSunFill className='forecast-mini-icon' />;
-			}
+
 			case 'Cloudy': {
 				return <BsCloudFill className='forecast-mini-icon' />;
 			}
