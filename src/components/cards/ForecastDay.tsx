@@ -33,7 +33,7 @@ export default function ForecastDay({
 	const [loading, setLoading] = useState(true);
 	const [weatherCodeData, setWeatherCodeData] = useState<weatherCodeData>();
 	const dateSplit = date.split(' ');
-	const formattedDate = `${dateSplit[0]}. ${dateSplit[1]}, ${dateSplit[2]}`;
+	const formattedDate = `${dateSplit[0]}. ${dateSplit[1]}`;
 	const formattedHigh = JSON.stringify(high).split('.');
 	const formattedLow = JSON.stringify(low).split('.');
 
@@ -168,27 +168,33 @@ export default function ForecastDay({
 		return (
 			<>
 				<div className='forecast-card'>
-					<h4 className='forecast-card-header'>{formattedDate}</h4>
+					<h4 className='forecast-card-header'>{day}</h4>
+
 					<div className='forecast-card-body'>
 						<div className='forecast-weekday'>
-							<h4 className='weekday'>{day}</h4>
+							<h4 className='weekday'>{formattedDate}</h4>
 						</div>
+
 						<div className='forecast-body-right'>
 							<img
 								src={weatherCodeData!.icon}
 								alt='forecast-icon'
 								className='forecast-icon'
 							/>
+
 							<h6 className='forecast'>
 								<span>{renderIcon(weatherCodeData!.text)}</span>
 								{weatherCodeData!.text}
 							</h6>
+
 							<section className='high-low'>
 								<div className='high'>
 									<div className='left-col'>
 										<p>High</p>
+
 										<div className='low'>
 											<p>Lo</p>
+
 											<h6>
 												<strong>{formattedLow[0]}</strong>°
 											</h6>

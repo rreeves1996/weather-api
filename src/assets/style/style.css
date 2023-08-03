@@ -263,13 +263,6 @@
   justify-content: center;
 }
 
-:root {
-  --app-primary: rgb(132, 53, 197);
-  --app-primary-dark: rgb(73, 32, 107);
-  --off-white: rgb(238, 234, 234);
-  --off-black: rgb(31, 19, 39);
-}
-
 .forecast-card {
   display: flex;
   flex-direction: column;
@@ -284,6 +277,9 @@
   border-radius: 6px 6px 6px 20px;
 }
 .forecast-card .forecast-card-header {
+  background: rgb(73, 32, 107);
+  background: linear-gradient(144deg, rgb(73, 32, 107) 38%, rgba(255, 255, 255, 0) 84%);
+  border-top-left-radius: 6px;
   width: 100%;
   font-size: 1.2rem;
   font-weight: 700;

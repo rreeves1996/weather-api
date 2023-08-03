@@ -12,6 +12,13 @@
 	border-radius: 6px 6px 6px 20px;
 
 	.forecast-card-header {
+		background: rgb(73, 32, 107);
+		background: linear-gradient(
+			144deg,
+			rgba(73, 32, 107, 1) 38%,
+			rgba(255, 255, 255, 0) 84%
+		);
+		border-top-left-radius: 6px;
 		width: 100%;
 		font-size: 1.2rem;
 		font-weight: 700;
