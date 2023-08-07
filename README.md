@@ -29,7 +29,7 @@
 <h3 align="center">Weather API</h3>
 
   <p align="center">
-    <a href="https://weather-api-ashy.vercel.app/"><strong>Tercel Deployment »</strong></a>
+    <a href="https://weather-api-ashy.vercel.app/"><strong>Vercel Deployment »</strong></a>
     <br />
     <a href="https://github.com/github_username/repo_name">View Demo</a>
     ·
@@ -84,7 +84,7 @@ Simple Weather API built with React. I hadn't built a Weather API since bootcamp
 
 ## Getting Started
 
-To use the app, simple visit the [Tercel Deployment](https://weather-api-ashy.vercel.app/) and search for a location. The app will then retrieve weather information for the provided location including current weather, an hourly forecast, and a daily forecast.
+To use the app, simple visit the [Vercel Deployment](https://weather-api-ashy.vercel.app/) and search for a location. The app will then retrieve weather information for the provided location including current weather, an hourly forecast, and a daily forecast.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
